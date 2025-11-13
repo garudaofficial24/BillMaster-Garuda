@@ -19,7 +19,7 @@ const EditQuotation = () => {
   const [items, setItems] = useState([]);
   const [formData, setFormData] = useState({
     quotation_number: "",
-    company_id: undefined,
+    company_id: "",
     client_name: "",
     client_address: "",
     client_phone: "",

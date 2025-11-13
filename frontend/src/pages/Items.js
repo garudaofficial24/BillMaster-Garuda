@@ -146,6 +146,9 @@ const Items = () => {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>{editingItem ? "Edit Item" : "Add New Item"}</DialogTitle>
+              <DialogDescription>
+                {editingItem ? "Update your item information" : "Fill in the details to add a new item or product"}
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>

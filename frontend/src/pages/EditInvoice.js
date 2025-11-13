@@ -12,8 +12,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 
-const CreateInvoice = () => {
+const EditInvoice = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [companies, setCompanies] = useState([]);
   const [items, setItems] = useState([]);
   const [formData, setFormData] = useState({

@@ -105,7 +105,7 @@ const EditQuotation = () => {
   };
 
   const handleItemChange = (index, field, value) => {
-    const newItems = [...quotationItems];
+    const newItems = [...invoiceItems];
     newItems[index][field] = value;
     
     // Auto calculate total
@@ -119,7 +119,7 @@ const EditQuotation = () => {
   const handleSelectItem = (index, itemId) => {
     const selectedItem = items.find(item => item.id === itemId);
     if (selectedItem) {
-      const newItems = [...quotationItems];
+      const newItems = [...invoiceItems];
       newItems[index] = {
         ...newItems[index],
         item_id: selectedItem.id,

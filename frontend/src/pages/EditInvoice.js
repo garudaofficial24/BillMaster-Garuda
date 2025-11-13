@@ -194,12 +194,12 @@ const EditInvoice = () => {
     };
 
     try {
-      await axios.post(`${API}/invoices`, submitData);
-      toast.success("Invoice created successfully");
+      await axios.put(`${API}/invoices/${id}`, submitData);
+      toast.success("Invoice updated successfully");
       navigate('/invoices');
     } catch (error) {
-      console.error("Error creating invoice:", error);
-      toast.error("Failed to create invoice");
+      console.error("Error updating invoice:", error);
+      toast.error("Failed to update invoice");
     }
   };
 

@@ -158,6 +158,10 @@ const Companies = () => {
       bank_account_name: "",
       logo: "",
     });
+    setLogoPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const openCreateDialog = () => {

@@ -67,26 +67,28 @@ const CreateInvoice = () => {
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    setFormData(prev => ({ ...prev, [name]: value }));
+  }, []);
 
-  const handleSelectChange = (name, value) => {
-    setFormData({ ...formData, [name]: value });
-  };
+  const handleSelectChange = useCallback((name, value) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  }, []);
 
-  const handleItemChange = (index, field, value) => {
-    const newItems = [...invoiceItems];
-    newItems[index][field] = value;
-    
-    // Auto calculate total
-    if (field === 'quantity' || field === 'unit_price') {
-      newItems[index].total = parseFloat(newItems[index].quantity || 0) * parseFloat(newItems[index].unit_price || 0);
-    }
-    
-    setInvoiceItems(newItems);
-  };
+  const handleItemChange = useCallback((index, field, value) => {
+    setInvoiceItems(prev => {
+      const newItems = [...prev];
+      newItems[index][field] = value;
+      
+      // Auto calculate total
+      if (field === 'quantity' || field === 'unit_price') {
+        newItems[index].total = parseFloat(newItems[index].quantity || 0) * parseFloat(newItems[index].unit_price || 0);
+      }
+      
+      return newItems;
+    });
+  }, []);
 
   const handleSelectItem = (index, itemId) => {
     const selectedItem = items.find(item => item.id === itemId);

@@ -362,7 +362,7 @@ const CreateQuotation = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {quotationItems.map((item, index) => (
+                  {invoiceItems.map((item, index) => (
                     <div key={index} className="border rounded-lg p-4 space-y-3">
                       <div className="flex justify-between items-start">
                         <h4 className="font-medium text-sm">Item {index + 1}</h4>

@@ -550,4 +550,4 @@ const CreateQuotation = () => {
   );
 };
 
-export default CreateInvoice;
+export default CreateQuotation;

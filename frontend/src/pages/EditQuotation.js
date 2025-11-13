@@ -73,8 +73,8 @@ const EditQuotation = () => {
       });
       setInvoiceItems(quotation.items);
     } catch (error) {
-      console.error(\"Error fetching quotation:\", error);
-      toast.error(\"Failed to fetch quotation\");
+      console.error("Error fetching quotation:", error);
+      toast.error("Failed to fetch quotation");
     }
   };
 

@@ -158,6 +158,15 @@ const Invoices = () => {
                         <Button
                           size="sm"
                           variant="ghost"
+                          data-testid={`preview-invoice-${invoice.id}`}
+                          onClick={() => handlePreview(invoice)}
+                          title="Preview"
+                        >
+                          <Eye size={16} />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
                           data-testid={`download-invoice-${invoice.id}`}
                           onClick={() => handleDownloadPDF(invoice.id, invoice.invoice_number)}
                           title="Download PDF"

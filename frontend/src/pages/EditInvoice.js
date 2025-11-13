@@ -19,7 +19,7 @@ const EditInvoice = () => {
   const [items, setItems] = useState([]);
   const [formData, setFormData] = useState({
     invoice_number: "",
-    company_id: "",
+    company_id: undefined,
     client_name: "",
     client_address: "",
     client_phone: "",
@@ -32,6 +32,8 @@ const EditInvoice = () => {
     notes: "",
     template_id: "template1",
     status: "draft",
+    signature_name: "",
+    signature_position: "",
   });
   const [invoiceItems, setInvoiceItems] = useState([{
     item_id: "",

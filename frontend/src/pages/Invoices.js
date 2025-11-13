@@ -206,6 +206,9 @@ const Invoices = () => {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Invoice Preview</DialogTitle>
+            <DialogDescription>
+              Preview your invoice before downloading or printing
+            </DialogDescription>
           </DialogHeader>
           {previewInvoice && (
             <div className="preview-container bg-white p-8 rounded-lg border">

@@ -83,7 +83,7 @@ const CreateQuotation = () => {
       newItems[index].total = parseFloat(newItems[index].quantity || 0) * parseFloat(newItems[index].unit_price || 0);
     }
     
-    setQuotationItems(newItems);
+    setInvoiceItems(newItems);
   };
 
   const handleSelectItem = (index, itemId) => {
@@ -99,7 +99,7 @@ const CreateQuotation = () => {
         unit: selectedItem.unit,
         total: newItems[index].quantity * selectedItem.unit_price,
       };
-      setQuotationItems(newItems);
+      setInvoiceItems(newItems);
     }
   };
 
@@ -118,7 +118,7 @@ const CreateQuotation = () => {
   const removeItem = (index) => {
     if (quotationItems.length > 1) {
       const newItems = quotationItems.filter((_, i) => i !== index);
-      setQuotationItems(newItems);
+      setInvoiceItems(newItems);
     }
   };
 

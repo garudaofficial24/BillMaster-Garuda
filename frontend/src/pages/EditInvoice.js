@@ -569,7 +569,7 @@ const EditInvoice = () => {
                   data-testid="submit-invoice-btn"
                   className="w-full bg-blue-600 hover:bg-blue-700 mt-4"
                 >
-                  Create Invoice
+                  Update Invoice
                 </Button>
               </CardContent>
             </Card>

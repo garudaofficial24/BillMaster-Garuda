@@ -211,6 +211,74 @@ const Companies = () => {
                   required
                 />
               </div>
+              
+              {/* Logo Upload Section */}
+              <div>
+                <Label>Company Logo</Label>
+                <div className="mt-2">
+                  {logoPreview ? (
+                    <div className="flex items-start gap-4">
+                      <div className="relative">
+                        <img
+                          src={logoPreview}
+                          alt="Company Logo"
+                          className="w-32 h-32 object-contain border-2 border-slate-200 rounded-lg p-2 bg-white"
+                          data-testid="logo-preview"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleRemoveLogo}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                          data-testid="remove-logo-btn"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-slate-600 mb-2">Logo uploaded successfully</p>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => fileInputRef.current?.click()}
+                          data-testid="change-logo-btn"
+                        >
+                          <Upload size={16} className="mr-2" />
+                          Change Logo
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
+                      <Upload className="mx-auto mb-2 text-slate-400" size={32} />
+                      <p className="text-sm text-slate-600 mb-2">
+                        Upload your company logo
+                      </p>
+                      <p className="text-xs text-slate-500 mb-3">
+                        PNG, JPG, GIF up to 2MB
+                      </p>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => fileInputRef.current?.click()}
+                        data-testid="upload-logo-btn"
+                      >
+                        <Upload size={16} className="mr-2" />
+                        Choose File
+                      </Button>
+                    </div>
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoUpload}
+                    className="hidden"
+                    data-testid="logo-file-input"
+                  />
+                </div>
+              </div>
               <div>
                 <Label htmlFor="address">Address</Label>
                 <Textarea

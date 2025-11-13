@@ -211,7 +211,7 @@ const EditInvoice = () => {
   };
 
   return (
-    <div data-testid="create-invoice-page">
+    <div data-testid="edit-invoice-page">
       <div className="mb-6">
         <Button
           variant="ghost"

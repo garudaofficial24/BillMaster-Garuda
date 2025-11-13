@@ -90,25 +90,27 @@ const CreateInvoice = () => {
     });
   }, []);
 
-  const handleSelectItem = (index, itemId) => {
+  const handleSelectItem = useCallback((index, itemId) => {
     const selectedItem = items.find(item => item.id === itemId);
     if (selectedItem) {
-      const newItems = [...invoiceItems];
-      newItems[index] = {
-        ...newItems[index],
-        item_id: selectedItem.id,
-        name: selectedItem.name,
-        description: selectedItem.description,
-        unit_price: selectedItem.unit_price,
-        unit: selectedItem.unit,
-        total: newItems[index].quantity * selectedItem.unit_price,
-      };
-      setInvoiceItems(newItems);
+      setInvoiceItems(prev => {
+        const newItems = [...prev];
+        newItems[index] = {
+          ...newItems[index],
+          item_id: selectedItem.id,
+          name: selectedItem.name,
+          description: selectedItem.description,
+          unit_price: selectedItem.unit_price,
+          unit: selectedItem.unit,
+          total: newItems[index].quantity * selectedItem.unit_price,
+        };
+        return newItems;
+      });
     }
-  };
+  }, [items]);
 
-  const addItem = () => {
-    setInvoiceItems([...invoiceItems, {
+  const addItem = useCallback(() => {
+    setInvoiceItems(prev => [...prev, {
       item_id: "",
       name: "",
       description: "",
@@ -117,14 +119,16 @@ const CreateInvoice = () => {
       unit: "pcs",
       total: 0,
     }]);
-  };
+  }, []);
 
-  const removeItem = (index) => {
-    if (invoiceItems.length > 1) {
-      const newItems = invoiceItems.filter((_, i) => i !== index);
-      setInvoiceItems(newItems);
-    }
-  };
+  const removeItem = useCallback((index) => {
+    setInvoiceItems(prev => {
+      if (prev.length > 1) {
+        return prev.filter((_, i) => i !== index);
+      }
+      return prev;
+    });
+  }, []);
 
   const calculateSubtotal = () => {
     return invoiceItems.reduce((sum, item) => sum + (item.total || 0), 0);

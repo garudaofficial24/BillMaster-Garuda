@@ -229,7 +229,8 @@ const CreateInvoice = () => {
                   <div>
                     <Label htmlFor="company_id">Company *</Label>
                     <Select 
-                      value={formData.company_id || undefined} 
+                      key={`company-${formData.company_id || 'empty'}`}
+                      value={formData.company_id || ""}
                       onValueChange={(value) => handleSelectChange('company_id', value)}
                     >
                       <SelectTrigger data-testid="company-select">

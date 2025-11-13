@@ -12,12 +12,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 
-const CreateInvoice = () => {
+const CreateQuotation = () => {
   const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
   const [items, setItems] = useState([]);
   const [formData, setFormData] = useState({
-    invoice_number: "",
+    quotation_number: "",
     company_id: "",
     client_name: "",
     client_address: "",

@@ -396,7 +396,7 @@ const EditQuotation = () => {
                     <div key={index} className="border rounded-lg p-4 space-y-3">
                       <div className="flex justify-between items-start">
                         <h4 className="font-medium text-sm">Item {index + 1}</h4>
-                        {quotationItems.length > 1 && (
+                        {invoiceItems.length > 1 && (
                           <Button
                             type="button"
                             variant="ghost"

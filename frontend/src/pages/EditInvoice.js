@@ -63,12 +63,12 @@ const EditInvoice = () => {
         client_phone: invoice.client_phone || "",
         client_email: invoice.client_email || "",
         date: invoice.date,
-        due_date: invoice.due_date || \"\",
+        due_date: invoice.due_date || "",
         currency: invoice.currency,
         tax_rate: invoice.tax_rate,
         discount_rate: invoice.discount_rate,
-        notes: invoice.notes || \"\",
-        template_id: invoice.template_id || \"template1\",
+        notes: invoice.notes || "",
+        template_id: invoice.template_id || "template1",
         status: invoice.status,
       });
       setInvoiceItems(invoice.items);

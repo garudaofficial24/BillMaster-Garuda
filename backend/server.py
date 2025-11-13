@@ -279,7 +279,7 @@ async def delete_item(item_id: str):
     return {"message": "Item deleted successfully"}
 
 # Invoice Routes
-@api_router.post("/invoices", response_model=Invoice)
+@api_router.post("/invoices", response_model=Invoice, status_code=201)
 async def create_invoice(input: InvoiceCreate):
     invoice_dict = input.model_dump()
     invoice = Invoice(**invoice_dict)

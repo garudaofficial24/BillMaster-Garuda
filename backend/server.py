@@ -158,6 +158,8 @@ class Quotation(BaseModel):
     notes: str = ""
     template_id: str = "template1"
     status: str = "draft"
+    signature_name: str = ""
+    signature_position: str = ""
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class QuotationCreate(BaseModel):
@@ -180,6 +182,8 @@ class QuotationCreate(BaseModel):
     notes: str = ""
     template_id: str = "template1"
     status: str = "draft"
+    signature_name: str = ""
+    signature_position: str = ""
 
 # Routes
 @api_router.get("/")

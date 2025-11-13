@@ -53,7 +53,8 @@ const EditQuotation = () => {
 
   const fetchQuotation = async () => {
     try {
-      const response = await axios.get(`${API}/quotations/${id}`);\n      const quotation = response.data;
+      const response = await axios.get(`${API}/quotations/${id}`);
+      const quotation = response.data;
       setFormData({
         quotation_number: quotation.quotation_number,
         company_id: quotation.company_id,

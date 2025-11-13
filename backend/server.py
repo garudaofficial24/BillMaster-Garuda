@@ -109,6 +109,8 @@ class Invoice(BaseModel):
     notes: str = ""
     template_id: str = "template1"
     status: str = "draft"
+    signature_name: str = ""
+    signature_position: str = ""
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class InvoiceCreate(BaseModel):
@@ -131,6 +133,8 @@ class InvoiceCreate(BaseModel):
     notes: str = ""
     template_id: str = "template1"
     status: str = "draft"
+    signature_name: str = ""
+    signature_position: str = ""
 
 class Quotation(BaseModel):
     model_config = ConfigDict(extra="ignore")

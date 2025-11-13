@@ -327,6 +327,25 @@ const Invoices = () => {
                 </div>
               )}
 
+              {/* Signature Section */}
+              {(previewInvoice.signature_name || previewInvoice.signature_position) && (
+                <div className="border-t pt-8 mt-8">
+                  <div className="flex justify-end">
+                    <div className="text-right">
+                      <p className="font-semibold text-slate-800 mb-16">Authorized Signature:</p>
+                      <div className="border-t border-slate-800 pt-2 min-w-[200px]">
+                        {previewInvoice.signature_name && (
+                          <p className="font-bold text-slate-800">{previewInvoice.signature_name}</p>
+                        )}
+                        {previewInvoice.signature_position && (
+                          <p className="text-sm text-slate-600">{previewInvoice.signature_position}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Action Buttons */}
               <div className="flex justify-end gap-3 mt-6 pt-6 border-t">
                 <Button

@@ -123,7 +123,7 @@ const CreateQuotation = () => {
   };
 
   const calculateSubtotal = () => {
-    return quotationItems.reduce((sum, item) => sum + (item.total || 0), 0);
+    return invoiceItems.reduce((sum, item) => sum + (item.total || 0), 0);
   };
 
   const calculateDiscount = () => {

@@ -158,6 +158,15 @@ const Quotations = () => {
                         <Button
                           size="sm"
                           variant="ghost"
+                          data-testid={`preview-quotation-${quotation.id}`}
+                          onClick={() => handlePreview(quotation)}
+                          title="Preview"
+                        >
+                          <Eye size={16} />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
                           data-testid={`download-quotation-${quotation.id}`}
                           onClick={() => handleDownloadPDF(quotation.id, quotation.quotation_number)}
                           title="Download PDF"

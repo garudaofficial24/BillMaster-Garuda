@@ -70,6 +70,8 @@ const EditQuotation = () => {
         notes: quotation.notes || "",
         template_id: quotation.template_id || "template1",
         status: quotation.status,
+        signature_name: quotation.signature_name || "",
+        signature_position: quotation.signature_position || "",
       });
       setInvoiceItems(quotation.items);
     } catch (error) {

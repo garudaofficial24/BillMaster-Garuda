@@ -231,7 +231,7 @@ async def delete_company(company_id: str):
     return {"message": "Company deleted successfully"}
 
 # Item Routes
-@api_router.post("/items", response_model=Item)
+@api_router.post("/items", response_model=Item, status_code=201)
 async def create_item(input: ItemCreate):
     item_dict = input.model_dump()
     item = Item(**item_dict)

@@ -126,6 +126,7 @@ const Companies = () => {
       bank_account_name: company.bank_account_name || "",
       logo: company.logo || "",
     });
+    setLogoPreview(company.logo || null);
     setDialogOpen(true);
   };
 

@@ -495,6 +495,17 @@ async def generate_invoice_pdf(invoice_id: str):
         story.append(Paragraph(f"Account: {company['bank_account']}", styles['Normal']))
         story.append(Paragraph(f"Account Name: {company['bank_account_name']}", styles['Normal']))
     
+    # Signature section
+    if invoice.get('signature_name') or invoice.get('signature_position'):
+        story.append(Spacer(1, 40))
+        signature_style = ParagraphStyle('signature', parent=styles['Normal'], fontSize=10, alignment=TA_RIGHT)
+        story.append(Paragraph("<b>Authorized Signature:</b>", signature_style))
+        story.append(Spacer(1, 40))
+        if invoice.get('signature_name'):
+            story.append(Paragraph(f"<b>{invoice['signature_name']}</b>", signature_style))
+        if invoice.get('signature_position'):
+            story.append(Paragraph(invoice['signature_position'], signature_style))
+    
     doc.build(story)
     buffer.seek(0)
     

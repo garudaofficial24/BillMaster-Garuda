@@ -327,7 +327,7 @@ async def delete_invoice(invoice_id: str):
     return {"message": "Invoice deleted successfully"}
 
 # Quotation Routes
-@api_router.post("/quotations", response_model=Quotation)
+@api_router.post("/quotations", response_model=Quotation, status_code=201)
 async def create_quotation(input: QuotationCreate):
     quotation_dict = input.model_dump()
     quotation = Quotation(**quotation_dict)

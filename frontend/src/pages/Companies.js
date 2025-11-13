@@ -154,6 +154,9 @@ const Companies = () => {
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingCompany ? "Edit Company" : "Add New Company"}</DialogTitle>
+              <DialogDescription>
+                {editingCompany ? "Update your company information" : "Fill in the details to add a new company"}
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>

@@ -46,7 +46,36 @@ const EditInvoice = () => {
   useEffect(() => {
     fetchCompanies();
     fetchItems();
-  }, []);
+    if (id) {
+      fetchInvoice();
+    }
+  }, [id]);
+
+  const fetchInvoice = async () => {
+    try {
+      const response = await axios.get(`${API}/invoices/${id}`);\n      const invoice = response.data;
+      setFormData({
+        invoice_number: invoice.invoice_number,
+        company_id: invoice.company_id,
+        client_name: invoice.client_name,
+        client_address: invoice.client_address || \"\",
+        client_phone: invoice.client_phone || \"\",
+        client_email: invoice.client_email || \"\",
+        date: invoice.date,
+        due_date: invoice.due_date || \"\",
+        currency: invoice.currency,
+        tax_rate: invoice.tax_rate,
+        discount_rate: invoice.discount_rate,
+        notes: invoice.notes || \"\",
+        template_id: invoice.template_id || \"template1\",
+        status: invoice.status,
+      });
+      setInvoiceItems(invoice.items);
+    } catch (error) {
+      console.error(\"Error fetching invoice:\", error);
+      toast.error(\"Failed to fetch invoice\");
+    }
+  };
 
   const fetchCompanies = async () => {
     try {

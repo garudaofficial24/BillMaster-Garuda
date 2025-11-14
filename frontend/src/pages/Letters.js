@@ -65,15 +65,31 @@ const Letters = () => {
     }
   };
 
-  const handlePreview = async (id) => {
+  const handlePreview = async (letter) => {
     try {
-      // Open PDF in new tab for better compatibility
-      const pdfUrl = `${API}/letters/${id}/pdf`;
-      window.open(pdfUrl, '_blank');
-      toast.success("PDF dibuka di tab baru");
+      const response = await axios.get(`${API}/letters/${letter.id}`);
+      
+      // Get company data
+      let companyData = null;
+      try {
+        const companyResponse = await axios.get(`${API}/companies/${letter.company_id}`);
+        companyData = companyResponse.data;
+      } catch (companyError) {
+        console.warn("Company not found, using letter data only");
+        companyData = {
+          name: "Company Information Not Available",
+          address: "",
+          phone: "",
+          email: "",
+          motto: ""
+        };
+      }
+      
+      setPreviewLetter({ ...response.data, company: companyData });
+      setPreviewDialogOpen(true);
     } catch (error) {
-      console.error("Error previewing letter:", error);
-      toast.error("Failed to preview letter");
+      console.error("Error loading preview:", error);
+      toast.error("Failed to load preview. Please try again.");
     }
   };
 

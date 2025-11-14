@@ -107,7 +107,7 @@ function AppContent() {
               >
                 <Menu size={24} />
               </button>
-              <h2 className="text-lg font-semibold text-slate-800">Invoice & Quotation Platform</h2>
+              <h2 className="text-lg font-semibold text-slate-800">Garuda Billing System</h2>
             </div>
             <div className="text-sm text-slate-600 font-medium">
               Copyright @2025. Garuda Technology

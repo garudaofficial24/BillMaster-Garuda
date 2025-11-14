@@ -19,6 +19,8 @@ class InvoiceQuotationAPITester:
         self.created_item_id = None
         self.created_invoice_id = None
         self.created_quotation_id = None
+        self.created_letter_id = None
+        self.uploaded_signature = None
 
     def log_result(self, test_name, success, details="", error_msg=""):
         """Log test result"""

@@ -885,8 +885,8 @@ async def generate_letter_pdf(letter_id: str):
                     sig_img_bytes = base64.b64decode(sig_img_data)
                     sig_img_pil = Image.open(io.BytesIO(sig_img_bytes))
                     
-                    # Resize signature
-                    max_sig_width, max_sig_height = 80, 40
+                    # Resize signature - 2x larger for better visibility
+                    max_sig_width, max_sig_height = 160, 80
                     sig_img_pil.thumbnail((max_sig_width, max_sig_height), Image.Resampling.LANCZOS)
                     
                     sig_img_buffer = io.BytesIO()
@@ -896,9 +896,9 @@ async def generate_letter_pdf(letter_id: str):
                     sig_image = RLImage(sig_img_buffer, width=sig_img_pil.width, height=sig_img_pil.height)
                     sig_content.append(sig_image)
                 except:
-                    sig_content.append(Spacer(1, 40))
+                    sig_content.append(Spacer(1, 80))
             else:
-                sig_content.append(Spacer(1, 40))
+                sig_content.append(Spacer(1, 80))
             
             sig_content.append(Spacer(1, 5))
             sig_content.append(Paragraph(f"<b>{sig.get('name', '')}</b>", sig_style))

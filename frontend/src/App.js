@@ -98,15 +98,20 @@ function AppContent() {
       <main className="flex-1 lg:ml-64">
         {/* Top Bar */}
         <div className="bg-white border-b border-slate-200 px-6 py-4 sticky top-0 z-30">
-          <div className="flex items-center gap-4">
-            <button
-              data-testid="open-sidebar-btn"
-              onClick={() => setSidebarOpen(true)}
-              className="lg:hidden text-slate-600 hover:text-slate-800"
-            >
-              <Menu size={24} />
-            </button>
-            <h2 className="text-lg font-semibold text-slate-800">Invoice & Quotation Platform</h2>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <button
+                data-testid="open-sidebar-btn"
+                onClick={() => setSidebarOpen(true)}
+                className="lg:hidden text-slate-600 hover:text-slate-800"
+              >
+                <Menu size={24} />
+              </button>
+              <h2 className="text-lg font-semibold text-slate-800">Invoice & Quotation Platform</h2>
+            </div>
+            <div className="text-sm text-slate-600 font-medium">
+              Copyright @2025. Garuda Technology
+            </div>
           </div>
         </div>
         

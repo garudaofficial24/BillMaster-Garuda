@@ -67,14 +67,10 @@ const Letters = () => {
 
   const handlePreview = async (id) => {
     try {
-      const response = await axios.get(`${API}/letters/${id}/pdf`, {
-        responseType: 'blob'
-      });
-      
-      const blob = new Blob([response.data], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
-      setPreviewUrl(url);
-      setPreviewOpen(true);
+      // Open PDF in new tab for better compatibility
+      const pdfUrl = `${API}/letters/${id}/pdf`;
+      window.open(pdfUrl, '_blank');
+      toast.success("PDF dibuka di tab baru");
     } catch (error) {
       console.error("Error previewing letter:", error);
       toast.error("Failed to preview letter");

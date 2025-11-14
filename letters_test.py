@@ -118,10 +118,14 @@ class LettersAPITester:
         print("="*50)
         
         try:
-            # Create a simple test image (1x1 pixel PNG)
-            # This is a minimal 1x1 pixel PNG image in base64
-            test_image_b64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAI9jU77mgAAAABJRU5ErkJggg=="
-            test_image_bytes = base64.b64decode(test_image_b64)
+            # Create a proper test image using PIL
+            from PIL import Image
+            import io
+            
+            img = Image.new('RGB', (100, 50), color='white')
+            img_buffer = io.BytesIO()
+            img.save(img_buffer, format='PNG')
+            test_image_bytes = img_buffer.getvalue()
             
             # Prepare multipart form data
             files = {'file': ('test_signature.png', test_image_bytes, 'image/png')}

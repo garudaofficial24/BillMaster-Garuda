@@ -756,8 +756,12 @@ async def generate_letter_pdf(letter_id: str):
     story = []
     styles = getSampleStyleSheet()
     
-    # Company Header with Logo (Kop Surat)
-    header_data = []
+    # Company Header with Logo (Kop Surat) - Centered Layout
+    company_style = ParagraphStyle('company', parent=styles['Normal'], fontSize=11, alignment=TA_CENTER)
+    company_name_style = ParagraphStyle('company_name', parent=styles['Normal'], fontSize=14, alignment=TA_CENTER, spaceAfter=4)
+    company_motto_style = ParagraphStyle('company_motto', parent=styles['Normal'], fontSize=9, alignment=TA_CENTER, textColor=colors.HexColor('#666666'), fontName='Helvetica-Oblique')
+    
+    # Add logo if available (centered)
     if company.get('logo'):
         try:
             logo_data = company['logo'].split(',')[1] if ',' in company['logo'] else company['logo']
@@ -774,32 +778,28 @@ async def generate_letter_pdf(letter_id: str):
             
             logo = RLImage(logo_buffer, width=logo_img.width, height=logo_img.height)
             
-            company_info = f"""<b>{company['name']}</b><br/>
-            {company.get('motto', '')}<br/>
-            {company.get('address', '')}<br/>
-            Tel: {company.get('phone', '')} | Email: {company.get('email', '')}<br/>
-            Website: {company.get('website', '')}"""
-            
-            header_data = [[logo, Paragraph(company_info, styles['Normal'])]]
+            # Center logo in table
+            logo_table = Table([[logo]], colWidths=[500])
+            logo_table.setStyle(TableStyle([
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ]))
+            story.append(logo_table)
+            story.append(Spacer(1, 8))
         except:
             pass
     
-    if not header_data:
-        company_style = ParagraphStyle('company', parent=styles['Normal'], fontSize=12, alignment=TA_CENTER)
-        story.append(Paragraph(f"<b>{company['name']}</b>", company_style))
-        if company.get('motto'):
-            story.append(Paragraph(company['motto'], company_style))
-        story.append(Paragraph(company.get('address', ''), company_style))
-        story.append(Paragraph(f"Tel: {company.get('phone', '')} | Email: {company.get('email', '')}", company_style))
-        if company.get('website'):
-            story.append(Paragraph(f"Website: {company['website']}", company_style))
-    else:
-        header_table = Table(header_data, colWidths=[80, 450])
-        header_table.setStyle(TableStyle([
-            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-            ('ALIGN', (0, 0), (0, 0), 'CENTER'),
-        ]))
-        story.append(header_table)
+    # Company name and details (centered)
+    story.append(Paragraph(f"<b>{company['name']}</b>", company_name_style))
+    
+    if company.get('motto'):
+        story.append(Paragraph(f"<i>{company.get('motto')}</i>", company_motto_style))
+        story.append(Spacer(1, 4))
+    
+    story.append(Paragraph(company.get('address', ''), company_style))
+    story.append(Paragraph(f"Tel: {company.get('phone', '')} | Email: {company.get('email', '')}", company_style))
+    
+    if company.get('website'):
+        story.append(Paragraph(f"Website: {company.get('website')}", company_style))
     
     # Line separator
     story.append(Spacer(1, 10))

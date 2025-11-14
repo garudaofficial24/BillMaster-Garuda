@@ -226,6 +226,7 @@ test_plan:
   completed_tests:
     - "PDF HTML tags fix verification - PASSED"
     - "Letters feature backend functionality - PASSED"
+    - "Letter PDF signature size and layout improvements - PASSED"
 
 agent_communication:
   - agent: "main"

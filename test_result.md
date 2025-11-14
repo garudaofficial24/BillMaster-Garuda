@@ -120,6 +120,18 @@ backend:
         agent: "testing"
         comment: "Comprehensive backend API testing completed successfully. All 27 tests passed (100% success rate). Tested: Company CRUD (create/read/update/delete), Item CRUD, Invoice CRUD, Quotation CRUD, PDF generation for invoices and quotations, multi-currency support (USD/EUR/SGD/MYR), and cleanup operations. All endpoints responding correctly with proper status codes and data integrity maintained. Backend remains fully functional after frontend dropdown replacement."
 
+  - task: "PDF HTML tags fix verification"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "PDF HTML tags fix verified successfully. Created comprehensive test suite with real test data: company (PDF Test Company Ltd), items (Premium Software License, Implementation Service, Training Package), invoice with complex totals (Rp 50,350,000), and quotation with complex totals (Rp 85,850,000). Downloaded and analyzed PDFs using PyPDF2 text extraction. Confirmed NO HTML tags (<b>, </b>, <strong>, etc.) present in PDF content. Total lines properly formatted in bold using ReportLab TableStyle with Helvetica-Bold font instead of HTML tags. Both invoice and quotation PDFs generate correctly without HTML tag artifacts. Sample content verified: 'Total: Rp 83,250,000' and 'Total: Rp 159,000,000' appear properly formatted without raw HTML. Fix working as intended."
+
 frontend:
   - task: "Replace Shadcn Select with native HTML select in CreateInvoice.js"
     implemented: true

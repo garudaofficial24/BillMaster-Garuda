@@ -339,6 +339,17 @@ const Companies = () => {
                 </div>
               </div>
               <div>
+                <Label htmlFor="motto">Motto/Tagline</Label>
+                <Input
+                  id="motto"
+                  name="motto"
+                  data-testid="company-motto-input"
+                  value={formData.motto}
+                  onChange={handleInputChange}
+                  placeholder="Contoh: Solusi Terpercaya untuk Bisnis Anda"
+                />
+              </div>
+              <div>
                 <Label htmlFor="bank_name">Bank Name</Label>
                 <Input
                   id="bank_name"

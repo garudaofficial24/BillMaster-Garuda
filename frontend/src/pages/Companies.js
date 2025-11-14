@@ -121,6 +121,7 @@ const Companies = () => {
       phone: company.phone || "",
       email: company.email || "",
       website: company.website || "",
+      motto: company.motto || "",
       npwp: company.npwp || "",
       bank_name: company.bank_name || "",
       bank_account: company.bank_account || "",

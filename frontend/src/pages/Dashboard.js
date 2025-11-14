@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API } from "../App";
-import { Receipt, FileText, Package, Building2, TrendingUp } from "lucide-react";
+import { Receipt, FileText, Package, Building2, TrendingUp, Mail } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
     invoices: 0,
     quotations: 0,
+    letters: 0,
     items: 0,
     companies: 0,
   });
@@ -19,9 +20,10 @@ const Dashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const [invoicesRes, quotationsRes, itemsRes, companiesRes] = await Promise.all([
+      const [invoicesRes, quotationsRes, lettersRes, itemsRes, companiesRes] = await Promise.all([
         axios.get(`${API}/invoices`),
         axios.get(`${API}/quotations`),
+        axios.get(`${API}/letters`),
         axios.get(`${API}/items`),
         axios.get(`${API}/companies`),
       ]);
@@ -29,6 +31,7 @@ const Dashboard = () => {
       setStats({
         invoices: invoicesRes.data.length,
         quotations: quotationsRes.data.length,
+        letters: lettersRes.data.length,
         items: itemsRes.data.length,
         companies: companiesRes.data.length,
       });

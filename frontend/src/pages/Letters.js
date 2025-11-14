@@ -228,11 +228,14 @@ const Letters = () => {
             <DialogTitle>Preview Surat</DialogTitle>
           </DialogHeader>
           {previewUrl && (
-            <iframe
-              src={previewUrl}
-              className="w-full h-full border-0"
-              title="Letter Preview"
-            />
+            <div className="w-full h-full">
+              <iframe
+                src={`${previewUrl}#toolbar=0`}
+                className="w-full h-full border-0"
+                title="Letter Preview"
+                type="application/pdf"
+              />
+            </div>
           )}
         </DialogContent>
       </Dialog>

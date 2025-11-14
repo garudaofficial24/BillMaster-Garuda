@@ -594,7 +594,7 @@ async def generate_quotation_pdf(quotation_id: str):
         summary_data.append([f"Discount ({quotation.get('discount_rate', 0)}%):", format_currency(quotation['discount_amount'], quotation['currency'])])
     if quotation.get('tax_amount', 0) > 0:
         summary_data.append([f"Tax ({quotation.get('tax_rate', 0)}%):", format_currency(quotation['tax_amount'], quotation['currency'])])
-    summary_data.append(['<b>Total:</b>', f"<b>{format_currency(quotation['total'], quotation['currency'])}</b>"])
+    summary_data.append(['Total:', format_currency(quotation['total'], quotation['currency'])])
     
     summary_table = Table(summary_data, colWidths=[350, 150])
     summary_table.setStyle(TableStyle([
@@ -602,6 +602,8 @@ async def generate_quotation_pdf(quotation_id: str):
         ('FONTSIZE', (0, 0), (-1, -1), 10),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
         ('LINEABOVE', (0, -1), (-1, -1), 2, colors.HexColor('#059669')),
+        ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, -1), (-1, -1), 12),
     ]))
     story.append(summary_table)
     

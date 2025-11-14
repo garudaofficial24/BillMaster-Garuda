@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 import axios from "axios";
-import { FileText, Receipt, Package, Building2, LayoutDashboard, Menu, X } from "lucide-react";
+import { FileText, Receipt, Package, Building2, LayoutDashboard, Menu, X, Mail } from "lucide-react";
 import "@/App.css";
 import Dashboard from "./pages/Dashboard";
 import Invoices from "./pages/Invoices";
@@ -12,6 +12,9 @@ import CreateInvoice from "./pages/CreateInvoice";
 import CreateQuotation from "./pages/CreateQuotation";
 import EditInvoice from "./pages/EditInvoice";
 import EditQuotation from "./pages/EditQuotation";
+import Letters from "./pages/Letters";
+import CreateLetter from "./pages/CreateLetter";
+import EditLetter from "./pages/EditLetter";
 import { Toaster } from "@/components/ui/sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;

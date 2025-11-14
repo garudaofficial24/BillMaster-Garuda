@@ -472,7 +472,7 @@ async def upload_signature(file: UploadFile = File(...)):
         # Validate image
         try:
             img = Image.open(io.BytesIO(contents))
-            img.verify()
+            img.load()  # This will raise an exception if the image is invalid
         except Exception:
             raise HTTPException(status_code=400, detail="Invalid image file")
         

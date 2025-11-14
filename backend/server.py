@@ -472,7 +472,7 @@ async def generate_invoice_pdf(invoice_id: str):
         summary_data.append([f"Discount ({invoice.get('discount_rate', 0)}%):", format_currency(invoice['discount_amount'], invoice['currency'])])
     if invoice.get('tax_amount', 0) > 0:
         summary_data.append([f"Tax ({invoice.get('tax_rate', 0)}%):", format_currency(invoice['tax_amount'], invoice['currency'])])
-    summary_data.append(['<b>Total:</b>', f"<b>{format_currency(invoice['total'], invoice['currency'])}</b>"])
+    summary_data.append(['Total:', format_currency(invoice['total'], invoice['currency'])])
     
     summary_table = Table(summary_data, colWidths=[350, 150])
     summary_table.setStyle(TableStyle([
@@ -480,6 +480,8 @@ async def generate_invoice_pdf(invoice_id: str):
         ('FONTSIZE', (0, 0), (-1, -1), 10),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
         ('LINEABOVE', (0, -1), (-1, -1), 2, colors.HexColor('#1e40af')),
+        ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, -1), (-1, -1), 12),
     ]))
     story.append(summary_table)
     

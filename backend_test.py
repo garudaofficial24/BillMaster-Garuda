@@ -595,6 +595,13 @@ class InvoiceQuotationAPITester:
                 f"items/{self.created_item_id}", 200
             )
         
+        # Delete Letter
+        if self.created_letter_id:
+            self.run_test(
+                "Delete Letter", "DELETE", 
+                f"letters/{self.created_letter_id}", 200
+            )
+        
         # Delete Company
         if self.created_company_id:
             self.run_test(

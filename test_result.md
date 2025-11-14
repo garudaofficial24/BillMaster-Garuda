@@ -132,6 +132,18 @@ backend:
         agent: "testing"
         comment: "PDF HTML tags fix verified successfully. Created comprehensive test suite with real test data: company (PDF Test Company Ltd), items (Premium Software License, Implementation Service, Training Package), invoice with complex totals (Rp 50,350,000), and quotation with complex totals (Rp 85,850,000). Downloaded and analyzed PDFs using PyPDF2 text extraction. Confirmed NO HTML tags (<b>, </b>, <strong>, etc.) present in PDF content. Total lines properly formatted in bold using ReportLab TableStyle with Helvetica-Bold font instead of HTML tags. Both invoice and quotation PDFs generate correctly without HTML tag artifacts. Sample content verified: 'Total: Rp 83,250,000' and 'Total: Rp 159,000,000' appear properly formatted without raw HTML. Fix working as intended."
 
+  - task: "Letters feature backend functionality"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive Letters feature backend testing completed successfully. All 36 tests passed (100% success rate). TESTED FUNCTIONALITY: 1) Company Setup with motto field - verified motto storage and retrieval, 2) Letter CRUD Operations - create/read/update/delete letters with all fields (letter_number, subject, recipient, content, signatories), 3) Signature Upload - tested base64 image upload endpoint with proper image validation, 4) PDF Generation - tested all 3 letter types (general, cooperation, request) with complete data including company logo/motto, recipient details, multi-paragraph content, multiple signatories (with/without signature images), and CC lists. FIXES APPLIED: Fixed TA_JUSTIFY import issue in PDF generation and improved image validation in signature upload. All endpoints responding correctly: /api/letters (CRUD), /api/upload-signature, /api/letters/{id}/pdf. PDF generation includes proper kop surat with logo, formatted content, signature sections, and tembusan. Letters feature fully functional and ready for production use."
+
 frontend:
   - task: "Replace Shadcn Select with native HTML select in CreateInvoice.js"
     implemented: true

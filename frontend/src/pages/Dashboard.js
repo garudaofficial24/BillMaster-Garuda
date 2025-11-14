@@ -58,6 +58,13 @@ const Dashboard = () => {
       testId: "stat-quotations"
     },
     {
+      title: "Total Letters",
+      value: stats.letters,
+      icon: Mail,
+      color: "bg-indigo-500",
+      testId: "stat-letters"
+    },
+    {
       title: "Total Items",
       value: stats.items,
       icon: Package,

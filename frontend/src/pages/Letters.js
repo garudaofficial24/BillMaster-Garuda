@@ -228,13 +228,22 @@ const Letters = () => {
             <DialogTitle>Preview Surat</DialogTitle>
           </DialogHeader>
           {previewUrl && (
-            <div className="w-full h-full">
-              <iframe
-                src={`${previewUrl}#toolbar=0`}
-                className="w-full h-full border-0"
-                title="Letter Preview"
+            <div className="w-full h-full flex flex-col">
+              <object
+                data={previewUrl}
                 type="application/pdf"
-              />
+                className="w-full flex-1"
+              >
+                <div className="flex flex-col items-center justify-center h-full space-y-4">
+                  <p className="text-slate-600">Browser Anda tidak support preview PDF</p>
+                  <Button
+                    onClick={() => window.open(previewUrl, '_blank')}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    Buka di Tab Baru
+                  </Button>
+                </div>
+              </object>
             </div>
           )}
         </DialogContent>

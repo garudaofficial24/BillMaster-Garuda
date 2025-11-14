@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
@@ -105,7 +104,8 @@ const EditQuotation = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   }, []);
 
-  const handleSelectChange = useCallback((name, value) => {
+  const handleSelectChange = useCallback((e) => {
+    const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   }, []);
 
@@ -255,18 +255,22 @@ const EditQuotation = () => {
                   </div>
                   <div>
                     <Label htmlFor="company_id">Company *</Label>
-                    <Select key={`company-${formData.company_id || 'empty'}`} value={formData.company_id || ""} onValueChange={(value) => handleSelectChange('company_id', value)}>
-                      <SelectTrigger data-testid="company-select">
-                        <SelectValue placeholder="Select company" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {companies.map((company) => (
-                          <SelectItem key={company.id} value={company.id}>
-                            {company.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <select
+                      id="company_id"
+                      name="company_id"
+                      data-testid="company-select"
+                      value={formData.company_id}
+                      onChange={handleSelectChange}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      required
+                    >
+                      <option value="">Select company</option>
+                      {companies.map((company) => (
+                        <option key={company.id} value={company.id}>
+                          {company.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -296,32 +300,36 @@ const EditQuotation = () => {
                 </div>
                 <div>
                   <Label htmlFor="currency">Currency</Label>
-                  <Select key={`currency-${formData.currency || 'IDR'}`} value={formData.currency || "IDR"} onValueChange={(value) => handleSelectChange('currency', value)}>
-                    <SelectTrigger data-testid="currency-select">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="IDR">IDR - Indonesian Rupiah</SelectItem>
-                      <SelectItem value="USD">USD - US Dollar</SelectItem>
-                      <SelectItem value="EUR">EUR - Euro</SelectItem>
-                      <SelectItem value="SGD">SGD - Singapore Dollar</SelectItem>
-                      <SelectItem value="MYR">MYR - Malaysian Ringgit</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <select
+                    id="currency"
+                    name="currency"
+                    data-testid="currency-select"
+                    value={formData.currency}
+                    onChange={handleSelectChange}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <option value="IDR">IDR - Indonesian Rupiah</option>
+                    <option value="USD">USD - US Dollar</option>
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="SGD">SGD - Singapore Dollar</option>
+                    <option value="MYR">MYR - Malaysian Ringgit</option>
+                  </select>
                 </div>
                 <div>
                   <Label htmlFor="status">Status</Label>
-                  <Select key={`status-${formData.status || 'draft'}`} value={formData.status || "draft"} onValueChange={(value) => handleSelectChange('status', value)}>
-                    <SelectTrigger data-testid="status-select">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="draft">Draft</SelectItem>
-                      <SelectItem value="sent">Sent</SelectItem>
-                      <SelectItem value="paid">Paid</SelectItem>
-                      <SelectItem value="overdue">Overdue</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <select
+                    id="status"
+                    name="status"
+                    data-testid="status-select"
+                    value={formData.status}
+                    onChange={handleSelectChange}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <option value="draft">Draft</option>
+                    <option value="sent">Sent</option>
+                    <option value="paid">Paid</option>
+                    <option value="overdue">Overdue</option>
+                  </select>
                 </div>
               </CardContent>
             </Card>
@@ -416,18 +424,19 @@ const EditQuotation = () => {
                       </div>
                       <div>
                         <Label>Select from Items Database (Optional)</Label>
-                        <Select key={`item-select-${index}-${item.item_id || 'empty'}`} value={item.item_id || ""} onValueChange={(value) => handleSelectItem(index, value)}>
-                          <SelectTrigger data-testid={`item-select-${index}`}>
-                            <SelectValue placeholder="Select an item" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {items.map((dbItem) => (
-                              <SelectItem key={dbItem.id} value={dbItem.id}>
-                                {dbItem.name} - {formatCurrency(dbItem.unit_price)}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <select
+                          data-testid={`item-select-${index}`}
+                          value={item.item_id}
+                          onChange={(e) => handleSelectItem(index, e.target.value)}
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          <option value="">Select an item</option>
+                          {items.map((dbItem) => (
+                            <option key={dbItem.id} value={dbItem.id}>
+                              {dbItem.name} - {formatCurrency(dbItem.unit_price)}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>

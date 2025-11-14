@@ -216,7 +216,7 @@ class InvoiceQuotationAPITester:
         }
         
         success, response = self.run_test(
-            "Create Invoice", "POST", "invoices", 200, 
+            "Create Invoice", "POST", "invoices", 201, 
             invoice_data, return_response=True
         )
         

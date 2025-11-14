@@ -71,7 +71,8 @@ const Letters = () => {
         responseType: 'blob'
       });
       
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
       setPreviewUrl(url);
       setPreviewOpen(true);
     } catch (error) {

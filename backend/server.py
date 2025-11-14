@@ -187,6 +187,42 @@ class QuotationCreate(BaseModel):
     signature_name: str = ""
     signature_position: str = ""
 
+class Signatory(BaseModel):
+    name: str
+    position: str
+    signature_image: Optional[str] = None
+
+class Letter(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    letter_number: str
+    company_id: str
+    date: str
+    subject: str
+    letter_type: str = "general"  # general, cooperation, request
+    recipient_name: str
+    recipient_position: str = ""
+    recipient_address: str = ""
+    content: str
+    attachments_count: int = 0
+    cc_list: str = ""
+    signatories: List[Signatory] = []
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class LetterCreate(BaseModel):
+    letter_number: str
+    company_id: str
+    date: str
+    subject: str
+    letter_type: str = "general"
+    recipient_name: str
+    recipient_position: str = ""
+    recipient_address: str = ""
+    content: str
+    attachments_count: int = 0
+    cc_list: str = ""
+    signatories: List[Signatory] = []
+
 # Routes
 @api_router.get("/")
 async def root():

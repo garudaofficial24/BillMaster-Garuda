@@ -214,34 +214,6 @@ const Letters = () => {
           ))}
         </div>
       )}
-
-      {/* Preview Dialog */}
-      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-        <DialogContent className="max-w-4xl h-[80vh]">
-          <DialogHeader>
-            <DialogTitle>Preview Surat</DialogTitle>
-          </DialogHeader>
-          {previewUrl && (
-            <div className="w-full h-full flex flex-col">
-              <object
-                data={previewUrl}
-                type="application/pdf"
-                className="w-full flex-1"
-              >
-                <div className="flex flex-col items-center justify-center h-full space-y-4">
-                  <p className="text-slate-600">Browser Anda tidak support preview PDF</p>
-                  <Button
-                    onClick={() => window.open(previewUrl, '_blank')}
-                    className="bg-blue-600 hover:bg-blue-700"
-                  >
-                    Buka di Tab Baru
-                  </Button>
-                </div>
-              </object>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

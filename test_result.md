@@ -239,6 +239,7 @@ test_plan:
     - "PDF HTML tags fix verification - PASSED"
     - "Letters feature backend functionality - PASSED"
     - "Letter PDF signature size and layout improvements - PASSED"
+    - "Logo display fix in PDF generation for all document types - PASSED"
 
 agent_communication:
   - agent: "main"

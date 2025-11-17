@@ -1002,7 +1002,8 @@ def main():
     tester = InvoiceQuotationAPITester()
     
     try:
-        success = tester.run_all_tests()
+        # Run focused logo display tests for the specific review request
+        success = tester.run_logo_display_tests()
         return 0 if success else 1
     except KeyboardInterrupt:
         print("\n⚠️  Tests interrupted by user")

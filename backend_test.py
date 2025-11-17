@@ -5,6 +5,7 @@ import sys
 import json
 from datetime import datetime, timedelta
 import uuid
+import io
 
 class InvoiceQuotationAPITester:
     def __init__(self, base_url="https://invoicecraft-6.preview.emergentagent.com"):

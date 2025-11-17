@@ -517,13 +517,62 @@ async def generate_invoice_pdf(invoice_id: str):
     story.append(Paragraph("INVOICE", header_style))
     story.append(Spacer(1, 20))
     
-    # Company Info
+    # Company Info with Logo
     company_style = ParagraphStyle('company', parent=styles['Normal'], fontSize=10, alignment=TA_LEFT)
-    story.append(Paragraph(f"<b>{company['name']}</b>", company_style))
-    story.append(Paragraph(company['address'], company_style))
-    story.append(Paragraph(f"Phone: {company['phone']} | Email: {company['email']}", company_style))
-    if company.get('npwp'):
-        story.append(Paragraph(f"NPWP: {company['npwp']}", company_style))
+    
+    # Try to add company logo
+    if company.get('logo'):
+        try:
+            logo_data = company['logo'].split(',')[1] if ',' in company['logo'] else company['logo']
+            logo_bytes = base64.b64decode(logo_data)
+            logo_img = Image.open(io.BytesIO(logo_bytes))
+            
+            # Resize logo to be more visible (increased from 60x60)
+            max_width, max_height = 100, 100
+            logo_img.thumbnail((max_width, max_height), Image.Resampling.LANCZOS)
+            
+            logo_buffer = io.BytesIO()
+            logo_img.save(logo_buffer, format='PNG')
+            logo_buffer.seek(0)
+            
+            logo = RLImage(logo_buffer, width=logo_img.width, height=logo_img.height)
+            
+            # Create table with logo and company info side by side
+            company_info_parts = [
+                f"<b>{company['name']}</b>",
+                company['address'],
+                f"Phone: {company['phone']} | Email: {company['email']}"
+            ]
+            if company.get('npwp'):
+                company_info_parts.append(f"NPWP: {company['npwp']}")
+            
+            company_info_text = '<br/>'.join(company_info_parts)
+            company_info_para = Paragraph(company_info_text, company_style)
+            
+            header_table = Table([[logo, company_info_para]], colWidths=[120, 350])
+            header_table.setStyle(TableStyle([
+                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+                ('ALIGN', (0, 0), (0, 0), 'LEFT'),
+                ('LEFTPADDING', (0, 0), (-1, -1), 0),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+            ]))
+            story.append(header_table)
+        except Exception as e:
+            # If logo fails, show company info only
+            print(f"Error loading logo: {e}")
+            story.append(Paragraph(f"<b>{company['name']}</b>", company_style))
+            story.append(Paragraph(company['address'], company_style))
+            story.append(Paragraph(f"Phone: {company['phone']} | Email: {company['email']}", company_style))
+            if company.get('npwp'):
+                story.append(Paragraph(f"NPWP: {company['npwp']}", company_style))
+    else:
+        # No logo, show company info only
+        story.append(Paragraph(f"<b>{company['name']}</b>", company_style))
+        story.append(Paragraph(company['address'], company_style))
+        story.append(Paragraph(f"Phone: {company['phone']} | Email: {company['email']}", company_style))
+        if company.get('npwp'):
+            story.append(Paragraph(f"NPWP: {company['npwp']}", company_style))
+    
     story.append(Spacer(1, 20))
     
     # Invoice Info

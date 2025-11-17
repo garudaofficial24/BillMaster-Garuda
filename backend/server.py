@@ -681,6 +681,26 @@ async def generate_quotation_pdf(quotation_id: str):
         ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
     ]))
     story.append(info_table)
+    story.append(Spacer(1, 15))
+    
+    # Client Information Section
+    client_style = ParagraphStyle('client', parent=styles['Normal'], fontSize=10, leading=14)
+    client_title_style = ParagraphStyle('client_title', parent=styles['Normal'], fontSize=11, fontName='Helvetica-Bold', spaceAfter=8)
+    
+    story.append(Paragraph("<b>Bill To:</b>", client_title_style))
+    story.append(Paragraph(f"<b>{quotation['client_name']}</b>", client_style))
+    
+    if quotation.get('client_address'):
+        # Handle multi-line addresses
+        address_lines = quotation['client_address'].replace('\n', '<br/>')
+        story.append(Paragraph(address_lines, client_style))
+    
+    if quotation.get('client_phone'):
+        story.append(Paragraph(f"Phone: {quotation['client_phone']}", client_style))
+    
+    if quotation.get('client_email'):
+        story.append(Paragraph(f"Email: {quotation['client_email']}", client_style))
+    
     story.append(Spacer(1, 20))
     
     # Items Table

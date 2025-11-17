@@ -671,7 +671,7 @@ async def generate_quotation_pdf(quotation_id: str):
     # Quotation Info
     info_data = [
         ["Quotation Number:", quotation['quotation_number'], "Date:", quotation['date']],
-        ["Client:", quotation['client_name'], "Valid Until:", quotation.get('valid_until', '-')],
+        ["Status:", quotation.get('status', 'draft').title(), "Valid Until:", quotation.get('valid_until', '-')],
     ]
     info_table = Table(info_data, colWidths=[120, 180, 80, 120])
     info_table.setStyle(TableStyle([

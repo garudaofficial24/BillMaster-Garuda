@@ -529,7 +529,7 @@ async def generate_invoice_pdf(invoice_id: str):
     # Invoice Info
     info_data = [
         ["Invoice Number:", invoice['invoice_number'], "Date:", invoice['date']],
-        ["Client:", invoice['client_name'], "Due Date:", invoice.get('due_date', '-')],
+        ["Status:", invoice.get('status', 'draft').title(), "Due Date:", invoice.get('due_date', '-')],
     ]
     info_table = Table(info_data, colWidths=[100, 200, 80, 120])
     info_table.setStyle(TableStyle([
@@ -539,6 +539,26 @@ async def generate_invoice_pdf(invoice_id: str):
         ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
     ]))
     story.append(info_table)
+    story.append(Spacer(1, 15))
+    
+    # Client Information Section
+    client_style = ParagraphStyle('client', parent=styles['Normal'], fontSize=10, leading=14)
+    client_title_style = ParagraphStyle('client_title', parent=styles['Normal'], fontSize=11, fontName='Helvetica-Bold', spaceAfter=8)
+    
+    story.append(Paragraph("<b>Bill To:</b>", client_title_style))
+    story.append(Paragraph(f"<b>{invoice['client_name']}</b>", client_style))
+    
+    if invoice.get('client_address'):
+        # Handle multi-line addresses
+        address_lines = invoice['client_address'].replace('\n', '<br/>')
+        story.append(Paragraph(address_lines, client_style))
+    
+    if invoice.get('client_phone'):
+        story.append(Paragraph(f"Phone: {invoice['client_phone']}", client_style))
+    
+    if invoice.get('client_email'):
+        story.append(Paragraph(f"Email: {invoice['client_email']}", client_style))
+    
     story.append(Spacer(1, 20))
     
     # Items Table

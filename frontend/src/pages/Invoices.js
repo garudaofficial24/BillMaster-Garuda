@@ -267,13 +267,28 @@ const Invoices = () => {
                   <p className="text-slate-800">{previewInvoice.date}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-slate-700">Client:</p>
-                  <p className="text-slate-800">{previewInvoice.client_name}</p>
-                </div>
-                <div>
                   <p className="text-sm font-semibold text-slate-700">Due Date:</p>
                   <p className="text-slate-800">{previewInvoice.due_date || '-'}</p>
                 </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-700">Status:</p>
+                  <p className="text-slate-800 capitalize">{previewInvoice.status}</p>
+                </div>
+              </div>
+
+              {/* Client Information */}
+              <div className="mb-6 p-4 border border-slate-200 rounded">
+                <h3 className="text-lg font-semibold text-slate-800 mb-3">Bill To:</h3>
+                <p className="text-slate-800 font-semibold">{previewInvoice.client_name}</p>
+                {previewInvoice.client_address && (
+                  <p className="text-slate-600 whitespace-pre-wrap">{previewInvoice.client_address}</p>
+                )}
+                {previewInvoice.client_phone && (
+                  <p className="text-slate-600">Phone: {previewInvoice.client_phone}</p>
+                )}
+                {previewInvoice.client_email && (
+                  <p className="text-slate-600">Email: {previewInvoice.client_email}</p>
+                )}
               </div>
 
               {/* Items Table */}

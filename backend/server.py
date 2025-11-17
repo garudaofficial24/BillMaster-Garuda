@@ -899,15 +899,15 @@ async def generate_letter_pdf(letter_id: str):
     company_name_style = ParagraphStyle('company_name', parent=styles['Normal'], fontSize=14, alignment=TA_CENTER, spaceAfter=4)
     company_motto_style = ParagraphStyle('company_motto', parent=styles['Normal'], fontSize=9, alignment=TA_CENTER, textColor=colors.HexColor('#666666'), fontName='Helvetica-Oblique')
     
-    # Add logo if available (centered)
+    # Add logo if available (centered) - Increased size for better visibility
     if company.get('logo'):
         try:
             logo_data = company['logo'].split(',')[1] if ',' in company['logo'] else company['logo']
             logo_bytes = base64.b64decode(logo_data)
             logo_img = Image.open(io.BytesIO(logo_bytes))
             
-            # Resize logo
-            max_width, max_height = 60, 60
+            # Resize logo - Increased from 60x60 to 100x100 for better visibility
+            max_width, max_height = 100, 100
             logo_img.thumbnail((max_width, max_height), Image.Resampling.LANCZOS)
             
             logo_buffer = io.BytesIO()
@@ -923,8 +923,8 @@ async def generate_letter_pdf(letter_id: str):
             ]))
             story.append(logo_table)
             story.append(Spacer(1, 8))
-        except:
-            pass
+        except Exception as e:
+            print(f"Error loading logo in letter PDF: {e}")
     
     # Company name and details (centered)
     story.append(Paragraph(f"<b>{company['name']}</b>", company_name_style))

@@ -348,6 +348,307 @@ class InvoiceQuotationAPITester:
             except Exception as e:
                 self.log_result("Quotation PDF Generation", False, error_msg=str(e))
 
+    def create_test_logo(self):
+        """Create a test logo for PDF testing"""
+        try:
+            from PIL import Image, ImageDraw
+            import base64
+            
+            # Create a 150x150 test logo with text
+            img = Image.new('RGB', (150, 150), color='lightblue')
+            draw = ImageDraw.Draw(img)
+            
+            # Draw a simple logo design
+            draw.rectangle([10, 10, 140, 140], outline='darkblue', width=3)
+            draw.text((30, 60), "LOGO", fill='darkblue')
+            draw.text((25, 80), "TEST", fill='darkblue')
+            
+            # Convert to base64
+            img_buffer = io.BytesIO()
+            img.save(img_buffer, format='PNG')
+            img_bytes = img_buffer.getvalue()
+            
+            base64_logo = base64.b64encode(img_bytes).decode('utf-8')
+            return f"data:image/png;base64,{base64_logo}"
+            
+        except Exception as e:
+            print(f"Error creating test logo: {e}")
+            return None
+
+    def test_logo_display_in_pdfs(self):
+        """Test logo display fix in PDF generation for all document types"""
+        print("\n" + "="*60)
+        print("TESTING LOGO DISPLAY FIX IN PDF GENERATION")
+        print("="*60)
+        
+        # Create test logo
+        test_logo = self.create_test_logo()
+        if not test_logo:
+            self.log_result("Logo Display Test Setup", False, error_msg="Failed to create test logo")
+            return
+        
+        # Create company with logo
+        company_with_logo_data = {
+            "name": "Logo Test Company Ltd",
+            "address": "123 Logo Test Street, Logo City 12345",
+            "phone": "+62-21-5555555",
+            "email": "logo@testcompany.com",
+            "website": "https://logotest.com",
+            "motto": "Excellence with Visual Identity",
+            "npwp": "99.888.777.6-543.000",
+            "bank_name": "Logo Bank Indonesia",
+            "bank_account": "9876543210",
+            "bank_account_name": "Logo Test Company Ltd",
+            "logo": test_logo
+        }
+        
+        success, response = self.run_test(
+            "Create Company with Logo", "POST", "companies", 201, 
+            company_with_logo_data, return_response=True
+        )
+        
+        if not success or not response:
+            self.log_result("Logo Display Test Setup", False, error_msg="Failed to create company with logo")
+            return
+        
+        logo_company_id = response.get('id')
+        print(f"   Created logo company ID: {logo_company_id}")
+        
+        # Create test item for documents
+        logo_item_data = {
+            "name": "Logo Test Service",
+            "description": "Professional service with logo display testing",
+            "unit_price": 250000.0,
+            "unit": "service"
+        }
+        
+        success, response = self.run_test(
+            "Create Logo Test Item", "POST", "items", 201, 
+            logo_item_data, return_response=True
+        )
+        
+        if not success or not response:
+            self.log_result("Logo Display Test Setup", False, error_msg="Failed to create test item")
+            return
+        
+        logo_item_id = response.get('id')
+        
+        # Test 1: Invoice PDF with Logo (100x100 pixels, side-by-side layout)
+        print("\n🔍 Testing Invoice PDF with Logo...")
+        today = datetime.now().strftime('%Y-%m-%d')
+        due_date = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+        
+        invoice_with_logo_data = {
+            "invoice_number": f"INV-LOGO-{datetime.now().strftime('%Y%m%d')}-001",
+            "company_id": logo_company_id,
+            "client_name": "Logo Test Client Corp",
+            "client_address": "456 Client Logo Street, Client City 67890",
+            "client_phone": "+62-21-7777777",
+            "client_email": "client@logotest.com",
+            "date": today,
+            "due_date": due_date,
+            "items": [
+                {
+                    "item_id": logo_item_id,
+                    "name": "Logo Test Service",
+                    "description": "Professional service with enhanced logo visibility",
+                    "quantity": 2.0,
+                    "unit_price": 250000.0,
+                    "unit": "service",
+                    "total": 500000.0
+                }
+            ],
+            "subtotal": 500000.0,
+            "tax_rate": 11.0,
+            "tax_amount": 55000.0,
+            "discount_rate": 0.0,
+            "discount_amount": 0.0,
+            "total": 555000.0,
+            "currency": "IDR",
+            "notes": "Invoice with enhanced logo display (100x100 pixels)",
+            "template_id": "template1",
+            "status": "draft"
+        }
+        
+        success, response = self.run_test(
+            "Create Invoice with Logo", "POST", "invoices", 201, 
+            invoice_with_logo_data, return_response=True
+        )
+        
+        if success and response:
+            logo_invoice_id = response.get('id')
+            
+            # Test Invoice PDF generation with logo
+            try:
+                url = f"{self.api_url}/invoices/{logo_invoice_id}/pdf"
+                response = requests.get(url, timeout=30)
+                
+                if response.status_code == 200 and response.headers.get('content-type') == 'application/pdf':
+                    pdf_size = len(response.content)
+                    self.log_result("Invoice PDF with Logo (100x100px, side-by-side)", True, 
+                                  f"PDF generated successfully, size: {pdf_size} bytes. Logo should be 100x100 pixels displayed side-by-side with company info.")
+                    
+                    # Save PDF for verification
+                    with open(f"/tmp/invoice_logo_test.pdf", "wb") as f:
+                        f.write(response.content)
+                    print(f"   📄 Invoice PDF saved to /tmp/invoice_logo_test.pdf for manual verification")
+                    
+                else:
+                    self.log_result("Invoice PDF with Logo (100x100px, side-by-side)", False, 
+                                  error_msg=f"Status: {response.status_code}, Content-Type: {response.headers.get('content-type')}")
+            except Exception as e:
+                self.log_result("Invoice PDF with Logo (100x100px, side-by-side)", False, error_msg=str(e))
+        
+        # Test 2: Quotation PDF with Logo (100x100 pixels, side-by-side layout)
+        print("\n🔍 Testing Quotation PDF with Logo...")
+        valid_until = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+        
+        quotation_with_logo_data = {
+            "quotation_number": f"QUO-LOGO-{datetime.now().strftime('%Y%m%d')}-001",
+            "company_id": logo_company_id,
+            "client_name": "Logo Test Client Corp",
+            "client_address": "456 Client Logo Street, Client City 67890",
+            "client_phone": "+62-21-7777777",
+            "client_email": "client@logotest.com",
+            "date": today,
+            "valid_until": valid_until,
+            "items": [
+                {
+                    "item_id": logo_item_id,
+                    "name": "Logo Test Service",
+                    "description": "Professional service with enhanced logo visibility",
+                    "quantity": 3.0,
+                    "unit_price": 250000.0,
+                    "unit": "service",
+                    "total": 750000.0
+                }
+            ],
+            "subtotal": 750000.0,
+            "tax_rate": 11.0,
+            "tax_amount": 82500.0,
+            "discount_rate": 5.0,
+            "discount_amount": 37500.0,
+            "total": 795000.0,
+            "currency": "IDR",
+            "notes": "Quotation with enhanced logo display (100x100 pixels)",
+            "template_id": "template1",
+            "status": "draft"
+        }
+        
+        success, response = self.run_test(
+            "Create Quotation with Logo", "POST", "quotations", 201, 
+            quotation_with_logo_data, return_response=True
+        )
+        
+        if success and response:
+            logo_quotation_id = response.get('id')
+            
+            # Test Quotation PDF generation with logo
+            try:
+                url = f"{self.api_url}/quotations/{logo_quotation_id}/pdf"
+                response = requests.get(url, timeout=30)
+                
+                if response.status_code == 200 and response.headers.get('content-type') == 'application/pdf':
+                    pdf_size = len(response.content)
+                    self.log_result("Quotation PDF with Logo (100x100px, side-by-side)", True, 
+                                  f"PDF generated successfully, size: {pdf_size} bytes. Logo should be 100x100 pixels displayed side-by-side with company info.")
+                    
+                    # Save PDF for verification
+                    with open(f"/tmp/quotation_logo_test.pdf", "wb") as f:
+                        f.write(response.content)
+                    print(f"   📄 Quotation PDF saved to /tmp/quotation_logo_test.pdf for manual verification")
+                    
+                else:
+                    self.log_result("Quotation PDF with Logo (100x100px, side-by-side)", False, 
+                                  error_msg=f"Status: {response.status_code}, Content-Type: {response.headers.get('content-type')}")
+            except Exception as e:
+                self.log_result("Quotation PDF with Logo (100x100px, side-by-side)", False, error_msg=str(e))
+        
+        # Test 3: Letter PDF with Logo (100x100 pixels, centered above company info)
+        print("\n🔍 Testing Letter PDF with Logo...")
+        
+        letter_with_logo_data = {
+            "letter_number": f"001/LOGO-TEST/{datetime.now().strftime('%m')}/{datetime.now().year}",
+            "company_id": logo_company_id,
+            "date": today,
+            "subject": "Testing Enhanced Logo Display in Letter PDF",
+            "letter_type": "general",
+            "recipient_name": "Bapak/Ibu Penerima Logo Test",
+            "recipient_position": "Direktur Utama",
+            "recipient_address": "PT. Logo Test Recipient\nJl. Logo Test No. 789\nLogo City 54321",
+            "content": "Dengan hormat,\n\nKami mengirimkan surat ini untuk menguji tampilan logo yang telah ditingkatkan dalam PDF surat resmi. Logo perusahaan seharusnya tampil dengan ukuran 100x100 pixels dan berada di posisi tengah di atas informasi perusahaan.\n\nPerubahan yang telah dilakukan:\n1. Ukuran logo ditingkatkan dari 60x60 menjadi 100x100 pixels\n2. Logo ditampilkan dengan posisi terpusat\n3. Kualitas tampilan logo diperbaiki untuk visibilitas yang lebih baik\n\nDemikian surat pengujian ini kami sampaikan. Terima kasih atas perhatiannya.",
+            "attachments_count": 1,
+            "cc_list": "1. Manager IT\n2. Quality Assurance Team",
+            "signatories": [
+                {
+                    "name": "Logo Test Manager",
+                    "position": "Manager Quality Assurance",
+                    "signature_image": None
+                }
+            ]
+        }
+        
+        success, response = self.run_test(
+            "Create Letter with Logo", "POST", "letters", 201, 
+            letter_with_logo_data, return_response=True
+        )
+        
+        if success and response:
+            logo_letter_id = response.get('id')
+            
+            # Test Letter PDF generation with logo
+            try:
+                url = f"{self.api_url}/letters/{logo_letter_id}/pdf"
+                response = requests.get(url, timeout=30)
+                
+                if response.status_code == 200 and response.headers.get('content-type') == 'application/pdf':
+                    pdf_size = len(response.content)
+                    self.log_result("Letter PDF with Logo (100x100px, centered)", True, 
+                                  f"PDF generated successfully, size: {pdf_size} bytes. Logo should be 100x100 pixels displayed centered above company info.")
+                    
+                    # Save PDF for verification
+                    with open(f"/tmp/letter_logo_test.pdf", "wb") as f:
+                        f.write(response.content)
+                    print(f"   📄 Letter PDF saved to /tmp/letter_logo_test.pdf for manual verification")
+                    
+                else:
+                    self.log_result("Letter PDF with Logo (100x100px, centered)", False, 
+                                  error_msg=f"Status: {response.status_code}, Content-Type: {response.headers.get('content-type')}")
+            except Exception as e:
+                self.log_result("Letter PDF with Logo (100x100px, centered)", False, error_msg=str(e))
+        
+        # Test 4: Error handling - Company without logo
+        print("\n🔍 Testing Error Handling - PDF generation without logo...")
+        
+        # Use the original company without logo for comparison
+        if self.created_company_id and self.created_invoice_id:
+            try:
+                url = f"{self.api_url}/invoices/{self.created_invoice_id}/pdf"
+                response = requests.get(url, timeout=30)
+                
+                if response.status_code == 200 and response.headers.get('content-type') == 'application/pdf':
+                    pdf_size = len(response.content)
+                    self.log_result("PDF Generation Fallback (no logo)", True, 
+                                  f"PDF generated successfully without logo, size: {pdf_size} bytes. Should fallback to text-only company info.")
+                else:
+                    self.log_result("PDF Generation Fallback (no logo)", False, 
+                                  error_msg=f"Status: {response.status_code}, Content-Type: {response.headers.get('content-type')}")
+            except Exception as e:
+                self.log_result("PDF Generation Fallback (no logo)", False, error_msg=str(e))
+        
+        # Cleanup logo test data
+        print("\n🧹 Cleaning up logo test data...")
+        if 'logo_invoice_id' in locals():
+            self.run_test("Delete Logo Invoice", "DELETE", f"invoices/{logo_invoice_id}", 200)
+        if 'logo_quotation_id' in locals():
+            self.run_test("Delete Logo Quotation", "DELETE", f"quotations/{logo_quotation_id}", 200)
+        if 'logo_letter_id' in locals():
+            self.run_test("Delete Logo Letter", "DELETE", f"letters/{logo_letter_id}", 200)
+        if logo_item_id:
+            self.run_test("Delete Logo Item", "DELETE", f"items/{logo_item_id}", 200)
+        if logo_company_id:
+            self.run_test("Delete Logo Company", "DELETE", f"companies/{logo_company_id}", 200)
+
     def test_signature_upload(self):
         """Test signature image upload functionality"""
         print("\n" + "="*50)

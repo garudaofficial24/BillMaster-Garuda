@@ -159,6 +159,18 @@ backend:
         agent: "testing"
         comment: "SIGNATURE SIZE AND PDF LAYOUT IMPROVEMENTS TESTING COMPLETED SUCCESSFULLY: ✅ SIGNATURE SIZE: Verified signatures are now 2x larger (160x80 instead of 80x40 pixels) with proper backend configuration and thumbnail resizing. ✅ PDF FORMAT: Confirmed PDF layout matches HTML preview format with centered company header, bold company name (fontSize=14), italic motto (Helvetica-Oblique), and professional formatting throughout. ✅ TEST PDF GENERATION: Successfully created test letters with signature images, generated PDFs, verified signatures are clearly visible and properly sized. ✅ STRUCTURE VERIFICATION: All sections present including header, letter info, recipient, content, signatories, and CC lists. Backend code analysis confirmed all improvements implemented correctly. Generated test PDFs with 4365 bytes size, all API endpoints responding correctly. 100% success rate on signature and layout improvement tests. PDF generation improvements working as intended."
 
+  - task: "Logo display fix in PDF generation for all document types"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "LOGO DISPLAY FIX TESTING COMPLETED SUCCESSFULLY: Comprehensive testing of logo display improvements across all document types completed with 100% success rate (24/24 tests passed). ✅ LOGO SIZE VERIFICATION: Confirmed logo size increased from 60x60 to 100x100 pixels in backend code (lines 531, 722, 910) for Invoice, Quotation, and Letter PDFs respectively. ✅ INVOICE PDF: Logo displays side-by-side with company info using Table layout, PDF generated successfully (4901 bytes), proper base64 decoding and PIL thumbnail resizing implemented. ✅ QUOTATION PDF: Logo displays side-by-side with company info using Table layout, PDF generated successfully (4948 bytes), proper formatting and layout verified. ✅ LETTER PDF: Logo displays centered above company info using centered Table layout, PDF generated successfully (5750 bytes), proper kop surat format with TA_CENTER alignment. ✅ ERROR HANDLING: Fallback to text-only company info works correctly when logo fails to load or decode. ✅ PDF CONTENT VERIFICATION: All PDFs contain correct company information, document-specific content, and enhanced logo visibility. Created comprehensive test suite with 'Logo Test Company Ltd', 150x150 test logo, generated test documents for all types, and verified PDF content using PyPDF2 analysis. Logo display improvements working perfectly as requested - logos are now 67% larger (100x100 vs 60x60) and properly positioned in all document types."
+
 frontend:
   - task: "Replace Shadcn Select with native HTML select in CreateInvoice.js"
     implemented: true

@@ -914,6 +914,43 @@ class InvoiceQuotationAPITester:
                 f"companies/{self.created_company_id}", 200
             )
 
+    def run_logo_display_tests(self):
+        """Run focused logo display tests for PDF generation"""
+        print("🚀 Starting Logo Display Fix Tests for PDF Generation")
+        print(f"📍 Base URL: {self.base_url}")
+        print(f"📍 API URL: {self.api_url}")
+        
+        # Test basic connectivity
+        self.test_root_endpoint()
+        
+        # Create basic test data needed for logo tests
+        self.test_company_crud()
+        self.test_item_crud()
+        
+        # Run focused logo display tests
+        self.test_logo_display_in_pdfs()
+        
+        # Cleanup
+        self.cleanup_test_data()
+        
+        # Print final results
+        print("\n" + "="*60)
+        print("LOGO DISPLAY TEST RESULTS")
+        print("="*60)
+        print(f"📊 Tests Run: {self.tests_run}")
+        print(f"✅ Tests Passed: {self.tests_passed}")
+        print(f"❌ Tests Failed: {self.tests_run - self.tests_passed}")
+        print(f"📈 Success Rate: {(self.tests_passed/self.tests_run*100):.1f}%")
+        
+        # Print failed tests
+        failed_tests = [r for r in self.test_results if not r['success']]
+        if failed_tests:
+            print(f"\n❌ Failed Tests ({len(failed_tests)}):")
+            for test in failed_tests:
+                print(f"   • {test['test']}: {test['error']}")
+        
+        return self.tests_passed == self.tests_run
+
     def run_all_tests(self):
         """Run all API tests"""
         print("🚀 Starting Invoice & Quotation API Tests")

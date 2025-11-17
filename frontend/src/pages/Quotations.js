@@ -267,13 +267,28 @@ const Quotations = () => {
                   <p className="text-slate-800">{previewQuotation.date}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-slate-700">Client:</p>
-                  <p className="text-slate-800">{previewQuotation.client_name}</p>
-                </div>
-                <div>
                   <p className="text-sm font-semibold text-slate-700">Valid Until:</p>
                   <p className="text-slate-800">{previewQuotation.valid_until || '-'}</p>
                 </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-700">Status:</p>
+                  <p className="text-slate-800 capitalize">{previewQuotation.status}</p>
+                </div>
+              </div>
+
+              {/* Client Information */}
+              <div className="mb-6 p-4 border border-slate-200 rounded">
+                <h3 className="text-lg font-semibold text-slate-800 mb-3">Bill To:</h3>
+                <p className="text-slate-800 font-semibold">{previewQuotation.client_name}</p>
+                {previewQuotation.client_address && (
+                  <p className="text-slate-600 whitespace-pre-wrap">{previewQuotation.client_address}</p>
+                )}
+                {previewQuotation.client_phone && (
+                  <p className="text-slate-600">Phone: {previewQuotation.client_phone}</p>
+                )}
+                {previewQuotation.client_email && (
+                  <p className="text-slate-600">Email: {previewQuotation.client_email}</p>
+                )}
               </div>
 
               {/* Items Table */}

@@ -258,6 +258,9 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "CreateLetter.js should also have activities table similar to EditLetter.js. Need to verify it exists and functions correctly."
+      - working: "NA"
+        agent: "main"
+        comment: "Code inspection confirms CreateLetter.js has 'Rincian Kegiatan (Opsional)' table section (line 373). Ready for automated frontend testing to verify full functionality."
 
   - task: "Activities table in Letters.js preview modal"
     implemented: true

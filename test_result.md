@@ -173,15 +173,18 @@ backend:
 
   - task: "Activities table (Rincian Kegiatan) support in backend"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Previous engineer added ActivityRow model (lines 195-201) and included activities field in Letter and LetterCreate models. Backend already supports storing and retrieving activities data. Need to verify through backend testing that CRUD operations work correctly with activities field."
+      - working: true
+        agent: "testing"
+        comment: "ACTIVITIES TABLE BACKEND TESTING COMPLETED SUCCESSFULLY: Comprehensive testing of Activities Table (Rincian Kegiatan) support completed with 100% success rate (28/28 tests passed). ✅ COMPANY SETUP: Created test company with motto field - verified motto storage and retrieval working correctly. ✅ LETTER CRUD WITH ACTIVITIES: Successfully tested create/read/update operations with activities data - created letters with 2-3 activity rows, verified all 6 ActivityRow fields (no, kegiatan, jumlah, satuan, hasil, keterangan) are stored and retrieved correctly. ✅ ACTIVITIES DATA STRUCTURE: All ActivityRow fields working properly - 'no' field as integer, all other fields as strings, special characters and newlines handled correctly. ✅ EDGE CASES TESTED: Empty activities array (✅), single activity (✅), multiple activities (5+ rows) (✅), update from no activities to having activities (✅), update to remove all activities (✅). ✅ PDF GENERATION: PDF generation with activities table working perfectly - activities table appears in PDF with proper formatting (header: 'Rincian Kegiatan', 6 columns, proper styling), PDF without activities works correctly (no table shown). ✅ FIELD VALIDATION: All field types validated - integer 'no' field, string fields for kegiatan/jumlah/satuan/hasil/keterangan, special characters and formatting preserved. Backend activities support is fully functional and production-ready."
 
 frontend:
   - task: "Replace Shadcn Select with native HTML select in CreateInvoice.js"

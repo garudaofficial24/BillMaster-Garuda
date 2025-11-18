@@ -363,18 +363,6 @@ const CreateLetter = () => {
                     Tip: Gunakan Enter untuk membuat paragraf baru
                   </p>
                 </div>
-                <div>
-                  <Label htmlFor="cc_list">Tembusan (CC)</Label>
-                  <Textarea
-                    id="cc_list"
-                    name="cc_list"
-                    data-testid="cc-input"
-                    value={formData.cc_list}
-                    onChange={handleInputChange}
-                    rows={3}
-                    placeholder="Masukkan nama penerima tembusan, satu per baris"
-                  />
-                </div>
               </CardContent>
             </Card>
 
@@ -476,6 +464,30 @@ const CreateLetter = () => {
                 <p className="text-xs text-slate-500 mt-2">
                   Tabel kegiatan akan ditampilkan di surat setelah isi surat
                 </p>
+              </CardContent>
+            </Card>
+
+            {/* Tembusan (CC) */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Tembusan (CC)</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div>
+                  <Label htmlFor="cc_list">Daftar Tembusan</Label>
+                  <Textarea
+                    id="cc_list"
+                    name="cc_list"
+                    data-testid="cc-input"
+                    value={formData.cc_list}
+                    onChange={handleInputChange}
+                    rows={3}
+                    placeholder="Masukkan nama penerima tembusan, satu per baris"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">
+                    Tembusan akan ditampilkan di bagian bawah surat
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </div>

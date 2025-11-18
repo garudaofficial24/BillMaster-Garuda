@@ -457,6 +457,7 @@ async def get_letter(letter_id: str):
 async def update_letter(letter_id: str, letter: LetterCreate):
     letter_dict = letter.dict()
     letter_dict["signatories"] = [sig.dict() for sig in letter.signatories]
+    letter_dict["activities"] = [act.dict() for act in letter.activities]
     result = await db.letters.update_one(
         {"id": letter_id},
         {"$set": letter_dict}

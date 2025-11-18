@@ -17,7 +17,7 @@ def test_signature_upload():
     print(f"Created image with {len(img_bytes)} bytes")
     
     # Test the upload
-    url = "https://invoicecraft-6.preview.emergentagent.com/api/upload-signature"
+    url = "https://documaster-2.preview.emergentagent.com/api/upload-signature"
     files = {'file': ('signature.png', img_bytes, 'image/png')}
     
     try:

@@ -171,6 +171,18 @@ backend:
         agent: "testing"
         comment: "LOGO DISPLAY FIX TESTING COMPLETED SUCCESSFULLY: Comprehensive testing of logo display improvements across all document types completed with 100% success rate (24/24 tests passed). ✅ LOGO SIZE VERIFICATION: Confirmed logo size increased from 60x60 to 100x100 pixels in backend code (lines 531, 722, 910) for Invoice, Quotation, and Letter PDFs respectively. ✅ INVOICE PDF: Logo displays side-by-side with company info using Table layout, PDF generated successfully (4901 bytes), proper base64 decoding and PIL thumbnail resizing implemented. ✅ QUOTATION PDF: Logo displays side-by-side with company info using Table layout, PDF generated successfully (4948 bytes), proper formatting and layout verified. ✅ LETTER PDF: Logo displays centered above company info using centered Table layout, PDF generated successfully (5750 bytes), proper kop surat format with TA_CENTER alignment. ✅ ERROR HANDLING: Fallback to text-only company info works correctly when logo fails to load or decode. ✅ PDF CONTENT VERIFICATION: All PDFs contain correct company information, document-specific content, and enhanced logo visibility. Created comprehensive test suite with 'Logo Test Company Ltd', 150x150 test logo, generated test documents for all types, and verified PDF content using PyPDF2 analysis. Logo display improvements working perfectly as requested - logos are now 67% larger (100x100 vs 60x60) and properly positioned in all document types."
 
+  - task: "Activities table (Rincian Kegiatan) support in backend"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Previous engineer added ActivityRow model (lines 195-201) and included activities field in Letter and LetterCreate models. Backend already supports storing and retrieving activities data. Need to verify through backend testing that CRUD operations work correctly with activities field."
+
 frontend:
   - task: "Replace Shadcn Select with native HTML select in CreateInvoice.js"
     implemented: true

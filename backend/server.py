@@ -1001,6 +1001,54 @@ async def generate_letter_pdf(letter_id: str):
     
     story.append(Spacer(1, 12))
     
+    # Activities Table (if exists)
+    if letter.get('activities') and len(letter['activities']) > 0:
+        story.append(Paragraph("<b>Rincian Kegiatan:</b>", styles['Normal']))
+        story.append(Spacer(1, 8))
+        
+        # Table header
+        activity_data = [['No.', 'Kegiatan', 'Jumlah', 'Satuan', 'Hasil', 'Keterangan']]
+        
+        # Table rows
+        for activity in letter['activities']:
+            activity_data.append([
+                str(activity.get('no', '')),
+                activity.get('kegiatan', ''),
+                activity.get('jumlah', ''),
+                activity.get('satuan', ''),
+                activity.get('hasil', ''),
+                activity.get('keterangan', '')
+            ])
+        
+        # Create table
+        activity_table = Table(activity_data, colWidths=[30, 150, 60, 60, 80, 120])
+        activity_table.setStyle(TableStyle([
+            # Header styling
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#e5e7eb')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 9),
+            ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+            
+            # Body styling
+            ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+            ('FONTSIZE', (0, 1), (-1, -1), 8),
+            ('ALIGN', (0, 1), (0, -1), 'CENTER'),  # No. column centered
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            
+            # Borders
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.black),
+            ('LINEBELOW', (0, 0), (-1, 0), 1, colors.black),
+            
+            # Padding
+            ('TOPPADDING', (0, 0), (-1, -1), 6),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+            ('LEFTPADDING', (0, 0), (-1, -1), 4),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+        ]))
+        story.append(activity_table)
+        story.append(Spacer(1, 15))
+    
     # Closing based on letter type
     if letter['letter_type'] == 'general':
         story.append(Paragraph("Demikian surat ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.", styles['Normal']))

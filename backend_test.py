@@ -1370,13 +1370,49 @@ class InvoiceQuotationAPITester:
         
         return self.tests_passed == self.tests_run
 
+    def run_activities_tests(self):
+        """Run focused activities table tests for Letters backend API"""
+        print("🚀 Starting Activities Table (Rincian Kegiatan) Support Tests")
+        print(f"📍 Base URL: {self.base_url}")
+        print(f"📍 API URL: {self.api_url}")
+        
+        # Test basic connectivity
+        self.test_root_endpoint()
+        
+        # Create basic test data needed for activities tests
+        self.test_company_crud()
+        
+        # Run focused activities tests
+        self.test_activities_table_support()
+        
+        # Cleanup
+        self.cleanup_test_data()
+        
+        # Print final results
+        print("\n" + "="*60)
+        print("ACTIVITIES TABLE TEST RESULTS")
+        print("="*60)
+        print(f"📊 Tests Run: {self.tests_run}")
+        print(f"✅ Tests Passed: {self.tests_passed}")
+        print(f"❌ Tests Failed: {self.tests_run - self.tests_passed}")
+        print(f"📈 Success Rate: {(self.tests_passed/self.tests_run*100):.1f}%")
+        
+        # Print failed tests
+        failed_tests = [r for r in self.test_results if not r['success']]
+        if failed_tests:
+            print(f"\n❌ Failed Tests ({len(failed_tests)}):")
+            for test in failed_tests:
+                print(f"   • {test['test']}: {test['error']}")
+        
+        return self.tests_passed == self.tests_run
+
 def main():
     """Main test execution"""
     tester = InvoiceQuotationAPITester()
     
     try:
-        # Run focused logo display tests for the specific review request
-        success = tester.run_logo_display_tests()
+        # Run focused activities table tests for the specific review request
+        success = tester.run_activities_tests()
         return 0 if success else 1
     except KeyboardInterrupt:
         print("\n⚠️  Tests interrupted by user")

@@ -232,6 +232,42 @@ frontend:
         agent: "main"
         comment: "Replaced all Shadcn Select components with native HTML select elements. All four form files now use stable native dropdowns."
 
+  - task: "Activities table in EditLetter.js form"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/EditLetter.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Previous engineer added complete activities table UI in EditLetter.js (lines 408-500). Includes: table structure with 6 columns (No, Kegiatan, Jumlah, Satuan, Hasil, Keterangan), add/remove row functionality, auto-renumbering, and proper state management. fetchLetter function updated to populate activities from API response (lines 85-87). Need to test that activities display correctly when editing existing letter and are saved properly."
+
+  - task: "Activities table in CreateLetter.js form"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/CreateLetter.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "CreateLetter.js should also have activities table similar to EditLetter.js. Need to verify it exists and functions correctly."
+
+  - task: "Activities table in Letters.js preview modal"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Letters.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Previous engineer added activities table display in preview modal (lines 306-337). Uses conditional rendering to show table only if activities exist and length > 0. Displays all 6 columns matching form structure. Need to test that preview modal correctly shows activities table with data."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"

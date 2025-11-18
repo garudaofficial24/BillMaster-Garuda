@@ -830,6 +830,379 @@ class InvoiceQuotationAPITester:
         else:
             self.log_result("Letter PDF Generation", False, error_msg="No letter ID available for PDF generation test")
 
+    def test_activities_table_support(self):
+        """Test comprehensive Activities Table (Rincian Kegiatan) support in Letters backend API"""
+        print("\n" + "="*60)
+        print("TESTING ACTIVITIES TABLE (RINCIAN KEGIATAN) SUPPORT")
+        print("="*60)
+        
+        if not self.created_company_id:
+            print("❌ Cannot test activities without a company. Skipping...")
+            return
+        
+        # Store created letter IDs for cleanup
+        activities_letter_ids = []
+        
+        # Test 1: Create letter WITH activities data (2-3 activity rows)
+        print("\n🔍 Test 1: Create Letter with Activities Data...")
+        today = datetime.now().strftime('%Y-%m-%d')
+        
+        letter_with_activities = {
+            "letter_number": f"001/ACT-TEST/{datetime.now().strftime('%m')}/{datetime.now().year}",
+            "company_id": self.created_company_id,
+            "date": today,
+            "subject": "Laporan Kegiatan Proyek Implementasi Sistem",
+            "letter_type": "general",
+            "recipient_name": "Bapak Direktur Operasional",
+            "recipient_position": "Direktur Operasional",
+            "recipient_address": "PT. Mitra Teknologi Indonesia\nJl. Sudirman No. 456\nJakarta Pusat 10110",
+            "content": "Dengan hormat,\n\nBersama ini kami sampaikan laporan kegiatan proyek implementasi sistem informasi yang telah dilaksanakan. Berikut adalah rincian kegiatan yang telah diselesaikan:",
+            "activities": [
+                {
+                    "no": 1,
+                    "kegiatan": "Analisis Kebutuhan Sistem",
+                    "jumlah": "2",
+                    "satuan": "minggu",
+                    "hasil": "Dokumen Requirement Analysis",
+                    "keterangan": "Selesai 100% sesuai jadwal"
+                },
+                {
+                    "no": 2,
+                    "kegiatan": "Desain Database dan Interface",
+                    "jumlah": "3",
+                    "satuan": "minggu", 
+                    "hasil": "ERD dan Mockup UI/UX",
+                    "keterangan": "Selesai dengan revisi minor"
+                },
+                {
+                    "no": 3,
+                    "kegiatan": "Development dan Testing",
+                    "jumlah": "4",
+                    "satuan": "minggu",
+                    "hasil": "Aplikasi Beta Version",
+                    "keterangan": "Dalam tahap finalisasi"
+                }
+            ],
+            "attachments_count": 1,
+            "cc_list": "1. Project Manager\n2. Technical Lead",
+            "signatories": [
+                {
+                    "name": "Ahmad Sutrisno",
+                    "position": "Project Manager",
+                    "signature_image": None
+                }
+            ]
+        }
+        
+        success, response = self.run_test(
+            "Create Letter with Activities (3 rows)", "POST", "letters", 201, 
+            letter_with_activities, return_response=True
+        )
+        
+        if success and response:
+            letter_id_1 = response.get('id')
+            activities_letter_ids.append(letter_id_1)
+            print(f"   Created letter with activities ID: {letter_id_1}")
+            
+            # Verify activities are stored correctly
+            success_get, get_response = self.run_test(
+                "Verify Activities Storage", "GET", f"letters/{letter_id_1}", 200, return_response=True
+            )
+            
+            if success_get and get_response:
+                stored_activities = get_response.get('activities', [])
+                if len(stored_activities) == 3:
+                    # Check all activity fields
+                    activity_1 = stored_activities[0]
+                    expected_fields = ['no', 'kegiatan', 'jumlah', 'satuan', 'hasil', 'keterangan']
+                    all_fields_present = all(field in activity_1 for field in expected_fields)
+                    
+                    if all_fields_present and activity_1['kegiatan'] == "Analisis Kebutuhan Sistem":
+                        self.log_result("Activities Data Structure Verification", True, 
+                                      "All 6 fields present and data stored correctly")
+                    else:
+                        self.log_result("Activities Data Structure Verification", False, 
+                                      error_msg=f"Missing fields or incorrect data. Got: {activity_1}")
+                else:
+                    self.log_result("Activities Data Structure Verification", False, 
+                                  error_msg=f"Expected 3 activities, got {len(stored_activities)}")
+        
+        # Test 2: Create letter with empty activities array
+        print("\n🔍 Test 2: Create Letter with Empty Activities...")
+        letter_empty_activities = {
+            "letter_number": f"002/ACT-EMPTY/{datetime.now().strftime('%m')}/{datetime.now().year}",
+            "company_id": self.created_company_id,
+            "date": today,
+            "subject": "Surat Tanpa Rincian Kegiatan",
+            "letter_type": "general",
+            "recipient_name": "Bapak Manager",
+            "recipient_position": "Manager",
+            "recipient_address": "Test Address",
+            "content": "Surat ini tidak memiliki rincian kegiatan.",
+            "activities": [],
+            "attachments_count": 0,
+            "cc_list": "",
+            "signatories": []
+        }
+        
+        success, response = self.run_test(
+            "Create Letter with Empty Activities", "POST", "letters", 201, 
+            letter_empty_activities, return_response=True
+        )
+        
+        if success and response:
+            letter_id_2 = response.get('id')
+            activities_letter_ids.append(letter_id_2)
+        
+        # Test 3: Create letter with 1 activity
+        print("\n🔍 Test 3: Create Letter with Single Activity...")
+        letter_single_activity = {
+            "letter_number": f"003/ACT-SINGLE/{datetime.now().strftime('%m')}/{datetime.now().year}",
+            "company_id": self.created_company_id,
+            "date": today,
+            "subject": "Laporan Kegiatan Tunggal",
+            "letter_type": "general",
+            "recipient_name": "Bapak Supervisor",
+            "recipient_position": "Supervisor",
+            "recipient_address": "Test Address",
+            "content": "Laporan untuk satu kegiatan saja.",
+            "activities": [
+                {
+                    "no": 1,
+                    "kegiatan": "Pelatihan Karyawan Baru",
+                    "jumlah": "1",
+                    "satuan": "hari",
+                    "hasil": "Sertifikat Pelatihan",
+                    "keterangan": "Berhasil dilaksanakan"
+                }
+            ],
+            "attachments_count": 0,
+            "cc_list": "",
+            "signatories": []
+        }
+        
+        success, response = self.run_test(
+            "Create Letter with Single Activity", "POST", "letters", 201, 
+            letter_single_activity, return_response=True
+        )
+        
+        if success and response:
+            letter_id_3 = response.get('id')
+            activities_letter_ids.append(letter_id_3)
+        
+        # Test 4: Create letter with multiple activities (5+)
+        print("\n🔍 Test 4: Create Letter with Multiple Activities (5+)...")
+        multiple_activities = []
+        for i in range(1, 6):
+            multiple_activities.append({
+                "no": i,
+                "kegiatan": f"Kegiatan Tahap {i}",
+                "jumlah": str(i),
+                "satuan": "unit",
+                "hasil": f"Hasil Tahap {i}",
+                "keterangan": f"Status: {'Selesai' if i <= 3 else 'Dalam Proses'}"
+            })
+        
+        letter_multiple_activities = {
+            "letter_number": f"004/ACT-MULTI/{datetime.now().strftime('%m')}/{datetime.now().year}",
+            "company_id": self.created_company_id,
+            "date": today,
+            "subject": "Laporan Kegiatan Multi Tahap",
+            "letter_type": "general",
+            "recipient_name": "Bapak Direktur",
+            "recipient_position": "Direktur",
+            "recipient_address": "Test Address",
+            "content": "Laporan kegiatan dengan banyak tahapan.",
+            "activities": multiple_activities,
+            "attachments_count": 0,
+            "cc_list": "",
+            "signatories": []
+        }
+        
+        success, response = self.run_test(
+            "Create Letter with Multiple Activities (5 rows)", "POST", "letters", 201, 
+            letter_multiple_activities, return_response=True
+        )
+        
+        if success and response:
+            letter_id_4 = response.get('id')
+            activities_letter_ids.append(letter_id_4)
+        
+        # Test 5: Update letter from no activities to having activities
+        print("\n🔍 Test 5: Update Letter - Add Activities...")
+        if letter_id_2:  # Use the empty activities letter
+            update_add_activities = {**letter_empty_activities}
+            update_add_activities["activities"] = [
+                {
+                    "no": 1,
+                    "kegiatan": "Kegiatan Baru Ditambahkan",
+                    "jumlah": "1",
+                    "satuan": "item",
+                    "hasil": "Hasil Update",
+                    "keterangan": "Ditambahkan via update"
+                }
+            ]
+            
+            success = self.run_test(
+                "Update Letter - Add Activities", "PUT", f"letters/{letter_id_2}", 200, 
+                update_add_activities
+            )
+            
+            if success:
+                # Verify the update
+                success_verify, verify_response = self.run_test(
+                    "Verify Activities Added via Update", "GET", f"letters/{letter_id_2}", 200, 
+                    return_response=True
+                )
+                
+                if success_verify and verify_response:
+                    updated_activities = verify_response.get('activities', [])
+                    if len(updated_activities) == 1 and updated_activities[0]['kegiatan'] == "Kegiatan Baru Ditambahkan":
+                        self.log_result("Activities Update Verification", True, 
+                                      "Activities successfully added via update")
+                    else:
+                        self.log_result("Activities Update Verification", False, 
+                                      error_msg=f"Update failed. Got: {updated_activities}")
+        
+        # Test 6: Update letter to remove all activities
+        print("\n🔍 Test 6: Update Letter - Remove All Activities...")
+        if letter_id_1:  # Use the letter with 3 activities
+            update_remove_activities = {**letter_with_activities}
+            update_remove_activities["activities"] = []
+            
+            success = self.run_test(
+                "Update Letter - Remove All Activities", "PUT", f"letters/{letter_id_1}", 200, 
+                update_remove_activities
+            )
+            
+            if success:
+                # Verify the removal
+                success_verify, verify_response = self.run_test(
+                    "Verify Activities Removed via Update", "GET", f"letters/{letter_id_1}", 200, 
+                    return_response=True
+                )
+                
+                if success_verify and verify_response:
+                    updated_activities = verify_response.get('activities', [])
+                    if len(updated_activities) == 0:
+                        self.log_result("Activities Removal Verification", True, 
+                                      "Activities successfully removed via update")
+                    else:
+                        self.log_result("Activities Removal Verification", False, 
+                                      error_msg=f"Removal failed. Still has {len(updated_activities)} activities")
+        
+        # Test 7: PDF Generation with Activities
+        print("\n🔍 Test 7: PDF Generation with Activities...")
+        if letter_id_4:  # Use the letter with multiple activities
+            try:
+                url = f"{self.api_url}/letters/{letter_id_4}/pdf"
+                response = requests.get(url, timeout=30)
+                
+                if response.status_code == 200 and response.headers.get('content-type') == 'application/pdf':
+                    pdf_size = len(response.content)
+                    self.log_result("PDF Generation with Activities", True, 
+                                  f"PDF generated successfully with activities table, size: {pdf_size} bytes")
+                    
+                    # Save PDF for verification
+                    with open(f"/tmp/activities_test_letter.pdf", "wb") as f:
+                        f.write(response.content)
+                    print(f"   📄 Activities PDF saved to /tmp/activities_test_letter.pdf for verification")
+                    
+                else:
+                    self.log_result("PDF Generation with Activities", False, 
+                                  error_msg=f"Status: {response.status_code}, Content-Type: {response.headers.get('content-type')}")
+            except Exception as e:
+                self.log_result("PDF Generation with Activities", False, error_msg=str(e))
+        
+        # Test 8: PDF Generation without Activities (should not show table)
+        print("\n🔍 Test 8: PDF Generation without Activities...")
+        if letter_id_2:  # Use the empty activities letter
+            try:
+                url = f"{self.api_url}/letters/{letter_id_2}/pdf"
+                response = requests.get(url, timeout=30)
+                
+                if response.status_code == 200 and response.headers.get('content-type') == 'application/pdf':
+                    pdf_size = len(response.content)
+                    self.log_result("PDF Generation without Activities", True, 
+                                  f"PDF generated successfully without activities table, size: {pdf_size} bytes")
+                else:
+                    self.log_result("PDF Generation without Activities", False, 
+                                  error_msg=f"Status: {response.status_code}, Content-Type: {response.headers.get('content-type')}")
+            except Exception as e:
+                self.log_result("PDF Generation without Activities", False, error_msg=str(e))
+        
+        # Test 9: Activities Field Validation - Test all 6 fields
+        print("\n🔍 Test 9: Activities Field Validation...")
+        test_activity_fields = {
+            "letter_number": f"005/ACT-FIELDS/{datetime.now().strftime('%m')}/{datetime.now().year}",
+            "company_id": self.created_company_id,
+            "date": today,
+            "subject": "Test Validasi Field Activities",
+            "letter_type": "general",
+            "recipient_name": "Test Recipient",
+            "recipient_position": "Test Position",
+            "recipient_address": "Test Address",
+            "content": "Testing all activity fields.",
+            "activities": [
+                {
+                    "no": 999,  # Test integer field
+                    "kegiatan": "Test Kegiatan dengan Nama Panjang untuk Validasi Field String",
+                    "jumlah": "100.5",  # Test string field with decimal
+                    "satuan": "kg/m²",  # Test string field with special characters
+                    "hasil": "Hasil dengan berbagai karakter: 123, @#$%, dan lainnya",
+                    "keterangan": "Keterangan lengkap dengan\nnewline dan\ttab characters"
+                }
+            ],
+            "attachments_count": 0,
+            "cc_list": "",
+            "signatories": []
+        }
+        
+        success, response = self.run_test(
+            "Activities Field Validation Test", "POST", "letters", 201, 
+            test_activity_fields, return_response=True
+        )
+        
+        if success and response:
+            letter_id_5 = response.get('id')
+            activities_letter_ids.append(letter_id_5)
+            
+            # Verify field types and content
+            success_verify, verify_response = self.run_test(
+                "Verify Field Types and Content", "GET", f"letters/{letter_id_5}", 200, 
+                return_response=True
+            )
+            
+            if success_verify and verify_response:
+                stored_activity = verify_response.get('activities', [{}])[0]
+                
+                # Check field types and values
+                field_checks = [
+                    (isinstance(stored_activity.get('no'), int), "no field should be integer"),
+                    (stored_activity.get('no') == 999, "no field value should be preserved"),
+                    (isinstance(stored_activity.get('kegiatan'), str), "kegiatan field should be string"),
+                    (isinstance(stored_activity.get('jumlah'), str), "jumlah field should be string"),
+                    (isinstance(stored_activity.get('satuan'), str), "satuan field should be string"),
+                    (isinstance(stored_activity.get('hasil'), str), "hasil field should be string"),
+                    (isinstance(stored_activity.get('keterangan'), str), "keterangan field should be string"),
+                ]
+                
+                all_checks_passed = all(check[0] for check in field_checks)
+                
+                if all_checks_passed:
+                    self.log_result("Activities Field Type Validation", True, 
+                                  "All field types and values validated successfully")
+                else:
+                    failed_checks = [check[1] for check in field_checks if not check[0]]
+                    self.log_result("Activities Field Type Validation", False, 
+                                  error_msg=f"Failed checks: {', '.join(failed_checks)}")
+        
+        # Cleanup activities test data
+        print("\n🧹 Cleaning up activities test data...")
+        for letter_id in activities_letter_ids:
+            if letter_id:
+                self.run_test(f"Delete Activities Test Letter", "DELETE", f"letters/{letter_id}", 200)
+
     def test_multi_currency(self):
         """Test multi-currency support"""
         print("\n" + "="*50)

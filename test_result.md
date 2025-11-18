@@ -276,10 +276,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Test all dropdown interactions in CreateInvoice.js"
-    - "Test all dropdown interactions in EditInvoice.js"
-    - "Test all dropdown interactions in CreateQuotation.js"
-    - "Test all dropdown interactions in EditQuotation.js"
+    - "Activities table (Rincian Kegiatan) support in backend"
+    - "Activities table in EditLetter.js form"
+    - "Activities table in CreateLetter.js form"
+    - "Activities table in Letters.js preview modal"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"

@@ -192,6 +192,14 @@ class Signatory(BaseModel):
     position: str
     signature_image: Optional[str] = None
 
+class ActivityRow(BaseModel):
+    no: int
+    kegiatan: str
+    jumlah: str = ""
+    satuan: str = ""
+    hasil: str = ""
+    keterangan: str = ""
+
 class Letter(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -204,6 +212,7 @@ class Letter(BaseModel):
     recipient_position: str = ""
     recipient_address: str = ""
     content: str
+    activities: List[ActivityRow] = []
     attachments_count: int = 0
     cc_list: str = ""
     signatories: List[Signatory] = []
@@ -219,6 +228,7 @@ class LetterCreate(BaseModel):
     recipient_position: str = ""
     recipient_address: str = ""
     content: str
+    activities: List[ActivityRow] = []
     attachments_count: int = 0
     cc_list: str = ""
     signatories: List[Signatory] = []

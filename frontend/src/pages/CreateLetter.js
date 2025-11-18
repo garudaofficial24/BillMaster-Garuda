@@ -171,6 +171,7 @@ const CreateLetter = () => {
     const submitData = {
       ...formData,
       attachments_count: parseInt(formData.attachments_count) || 0,
+      activities: activities.filter(act => act.kegiatan.trim() !== ""),
       signatories: validSignatories,
     };
 

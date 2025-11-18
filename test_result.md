@@ -270,15 +270,18 @@ frontend:
 
   - task: "Activities table in Letters.js preview modal"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/Letters.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Previous engineer added activities table display in preview modal (lines 306-337). Uses conditional rendering to show table only if activities exist and length > 0. Displays all 6 columns matching form structure. Need to test that preview modal correctly shows activities table with data."
+      - working: true
+        agent: "testing"
+        comment: "PREVIEW MODAL ACTIVITIES TABLE VERIFIED: ✅ Letters.js preview modal contains complete activities table implementation (lines 306-337), ✅ Conditional rendering working correctly - 'Rincian Kegiatan:' heading and table only appear when activities exist, ✅ Table structure matches form (6 columns: No, Kegiatan, Jumlah, Satuan, Hasil, Keterangan), ✅ Proper styling with borders and formatting, ✅ Activities data correctly displayed from API response, ✅ No activities section when letter has empty activities array (conditional rendering working). Preview modal activities display is fully functional after backend fix."
 
 metadata:
   created_by: "main_agent"

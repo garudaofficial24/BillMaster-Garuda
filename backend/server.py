@@ -442,6 +442,7 @@ async def create_letter(letter: LetterCreate):
     letter_dict["id"] = str(uuid.uuid4())
     letter_dict["created_at"] = datetime.now(timezone.utc).isoformat()
     letter_dict["signatories"] = [sig.dict() for sig in letter.signatories]
+    letter_dict["activities"] = [act.dict() for act in letter.activities]
     await db.letters.insert_one(letter_dict)
     return Letter(**letter_dict)
 

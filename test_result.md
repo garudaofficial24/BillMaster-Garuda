@@ -252,11 +252,11 @@ frontend:
 
   - task: "Activities table in CreateLetter.js form"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/CreateLetter.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -264,6 +264,9 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Code inspection confirms CreateLetter.js has 'Rincian Kegiatan (Opsional)' table section (line 373). Ready for automated frontend testing to verify full functionality."
+      - working: true
+        agent: "testing"
+        comment: "ACTIVITIES TABLE FUNCTIONALITY VERIFIED: ✅ CreateLetter.js contains complete activities table implementation (lines 369-468), ✅ Table structure with 6 columns (No, Kegiatan, Jumlah, Satuan, Hasil, Keterangan, Aksi), ✅ Add/remove row functionality working correctly, ✅ Auto-numbering system working (renumbers after deletion), ✅ Form correctly captures and sends activities data in request payload, ✅ Activities filtering works (filters out empty kegiatan fields), ✅ Integration with form submission working. Combined with backend fix, CreateLetter activities table is fully functional."
 
   - task: "Activities table in Letters.js preview modal"
     implemented: true

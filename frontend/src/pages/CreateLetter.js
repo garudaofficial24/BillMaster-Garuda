@@ -377,6 +377,107 @@ const CreateLetter = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Activities Table */}
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <CardTitle>Rincian Kegiatan (Opsional)</CardTitle>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addActivity}
+                    data-testid="add-activity-btn"
+                  >
+                    <Plus size={16} className="mr-2" />
+                    Tambah Baris
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse border border-slate-300">
+                    <thead>
+                      <tr className="bg-slate-100">
+                        <th className="border border-slate-300 px-2 py-2 text-xs font-semibold w-12">No.</th>
+                        <th className="border border-slate-300 px-2 py-2 text-xs font-semibold">Kegiatan</th>
+                        <th className="border border-slate-300 px-2 py-2 text-xs font-semibold w-20">Jumlah</th>
+                        <th className="border border-slate-300 px-2 py-2 text-xs font-semibold w-20">Satuan</th>
+                        <th className="border border-slate-300 px-2 py-2 text-xs font-semibold w-24">Hasil</th>
+                        <th className="border border-slate-300 px-2 py-2 text-xs font-semibold">Keterangan</th>
+                        <th className="border border-slate-300 px-2 py-2 text-xs font-semibold w-12">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {activities.map((activity, index) => (
+                        <tr key={index}>
+                          <td className="border border-slate-300 px-2 py-1 text-center">
+                            <span className="text-sm">{activity.no}</span>
+                          </td>
+                          <td className="border border-slate-300 px-2 py-1">
+                            <Input
+                              value={activity.kegiatan}
+                              onChange={(e) => handleActivityChange(index, 'kegiatan', e.target.value)}
+                              placeholder="Nama kegiatan"
+                              className="h-8 text-sm"
+                            />
+                          </td>
+                          <td className="border border-slate-300 px-2 py-1">
+                            <Input
+                              value={activity.jumlah}
+                              onChange={(e) => handleActivityChange(index, 'jumlah', e.target.value)}
+                              placeholder="0"
+                              className="h-8 text-sm"
+                            />
+                          </td>
+                          <td className="border border-slate-300 px-2 py-1">
+                            <Input
+                              value={activity.satuan}
+                              onChange={(e) => handleActivityChange(index, 'satuan', e.target.value)}
+                              placeholder="unit"
+                              className="h-8 text-sm"
+                            />
+                          </td>
+                          <td className="border border-slate-300 px-2 py-1">
+                            <Input
+                              value={activity.hasil}
+                              onChange={(e) => handleActivityChange(index, 'hasil', e.target.value)}
+                              placeholder="hasil"
+                              className="h-8 text-sm"
+                            />
+                          </td>
+                          <td className="border border-slate-300 px-2 py-1">
+                            <Input
+                              value={activity.keterangan}
+                              onChange={(e) => handleActivityChange(index, 'keterangan', e.target.value)}
+                              placeholder="keterangan"
+                              className="h-8 text-sm"
+                            />
+                          </td>
+                          <td className="border border-slate-300 px-2 py-1 text-center">
+                            {activities.length > 1 && (
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => removeActivity(index)}
+                                className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                              >
+                                <Trash2 size={14} />
+                              </Button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-slate-500 mt-2">
+                  Tabel kegiatan akan ditampilkan di surat setelah isi surat
+                </p>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Signatories Sidebar */}

@@ -123,6 +123,36 @@ const CreateLetter = () => {
     }
   };
 
+  const handleActivityChange = (index, field, value) => {
+    const newActivities = [...activities];
+    newActivities[index][field] = value;
+    setActivities(newActivities);
+  };
+
+  const addActivity = () => {
+    const newNo = activities.length + 1;
+    setActivities([...activities, {
+      no: newNo,
+      kegiatan: "",
+      jumlah: "",
+      satuan: "",
+      hasil: "",
+      keterangan: ""
+    }]);
+  };
+
+  const removeActivity = (index) => {
+    if (activities.length > 1) {
+      const newActivities = activities.filter((_, i) => i !== index);
+      // Renumber activities
+      const renumbered = newActivities.map((act, idx) => ({
+        ...act,
+        no: idx + 1
+      }));
+      setActivities(renumbered);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     

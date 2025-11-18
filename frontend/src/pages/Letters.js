@@ -303,6 +303,39 @@ const Letters = () => {
                 ))}
               </div>
 
+              {/* Activities Table */}
+              {previewLetter.activities && previewLetter.activities.length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-base font-semibold text-slate-800 mb-3">Rincian Kegiatan:</h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse border border-slate-400">
+                      <thead>
+                        <tr className="bg-slate-200">
+                          <th className="border border-slate-400 px-3 py-2 text-sm font-semibold text-center w-12">No.</th>
+                          <th className="border border-slate-400 px-3 py-2 text-sm font-semibold">Kegiatan</th>
+                          <th className="border border-slate-400 px-3 py-2 text-sm font-semibold w-20">Jumlah</th>
+                          <th className="border border-slate-400 px-3 py-2 text-sm font-semibold w-20">Satuan</th>
+                          <th className="border border-slate-400 px-3 py-2 text-sm font-semibold w-24">Hasil</th>
+                          <th className="border border-slate-400 px-3 py-2 text-sm font-semibold">Keterangan</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {previewLetter.activities.map((activity, idx) => (
+                          <tr key={idx}>
+                            <td className="border border-slate-400 px-3 py-2 text-sm text-center">{activity.no}</td>
+                            <td className="border border-slate-400 px-3 py-2 text-sm">{activity.kegiatan}</td>
+                            <td className="border border-slate-400 px-3 py-2 text-sm text-center">{activity.jumlah}</td>
+                            <td className="border border-slate-400 px-3 py-2 text-sm text-center">{activity.satuan}</td>
+                            <td className="border border-slate-400 px-3 py-2 text-sm">{activity.hasil}</td>
+                            <td className="border border-slate-400 px-3 py-2 text-sm">{activity.keterangan}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
               {/* Closing */}
               <div className="mb-8">
                 {previewLetter.letter_type === 'general' && (

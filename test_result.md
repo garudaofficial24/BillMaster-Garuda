@@ -282,7 +282,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Activities table (Rincian Kegiatan) support in backend"
     - "Activities table in EditLetter.js form"
     - "Activities table in CreateLetter.js form"
     - "Activities table in Letters.js preview modal"

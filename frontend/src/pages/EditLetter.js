@@ -82,6 +82,10 @@ const EditLetter = () => {
         setSignatories(letter.signatories);
       }
       
+      if (letter.activities && letter.activities.length > 0) {
+        setActivities(letter.activities);
+      }
+      
       setLoading(false);
     } catch (error) {
       console.error("Error fetching letter:", error);

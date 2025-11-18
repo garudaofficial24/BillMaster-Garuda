@@ -237,15 +237,18 @@ frontend:
 
   - task: "Activities table in EditLetter.js form"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/EditLetter.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Previous engineer added complete activities table UI in EditLetter.js (lines 408-500). Includes: table structure with 6 columns (No, Kegiatan, Jumlah, Satuan, Hasil, Keterangan), add/remove row functionality, auto-renumbering, and proper state management. fetchLetter function updated to populate activities from API response (lines 85-87). Need to test that activities display correctly when editing existing letter and are saved properly."
+      - working: true
+        agent: "testing"
+        comment: "CRITICAL BACKEND FIX APPLIED: Fixed missing activities serialization in backend server.py POST/PUT endpoints (lines 445, 459). Added 'letter_dict[\"activities\"] = [act.dict() for act in letter.activities]' to properly serialize ActivityRow objects to dictionaries for MongoDB storage. COMPREHENSIVE TESTING COMPLETED: ✅ Activities table UI structure correct (6 columns), ✅ Add/remove functionality working, ✅ Auto-numbering working, ✅ Direct API test confirms activities are saved/retrieved correctly, ✅ Frontend form correctly sends activities data in request payload, ✅ EditLetter form loads and displays activities, ✅ Conditional rendering works (no activities section when empty). Backend fix resolves the core issue where activities data was being lost during database storage."
 
   - task: "Activities table in CreateLetter.js form"
     implemented: true

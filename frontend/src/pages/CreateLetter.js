@@ -31,6 +31,14 @@ const CreateLetter = () => {
     position: "",
     signature_image: null,
   }]);
+  const [activities, setActivities] = useState([{
+    no: 1,
+    kegiatan: "",
+    jumlah: "",
+    satuan: "",
+    hasil: "",
+    keterangan: ""
+  }]);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
